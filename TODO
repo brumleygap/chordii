@@ -5,6 +5,10 @@
 [_] abstract version information from patchlevel.h
 	[_] RPM and DEB generation scripts should use same version numbers
 [_] use GNU autotools
+[_] port to other operating systems
+	might just mean performing test compilations
+	[_] Windows
+	[_] OSX
 
 --------------------------------------------------------------------------------
 vim:ft=vo_base
