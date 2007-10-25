@@ -1,0 +1,8 @@
+[_] use system getopt library
+[_] create debian package
+[_] abstract version information from patchlevel.h
+	[_] RPM and DEB generation scripts should use same version numbers
+[_] use GNU autotools
+
+--------------------------------------------------------------------------------
+vim:ft=vo_base

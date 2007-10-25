@@ -1,0 +1,3 @@
+The syntax highlighting file 'chordpro.vim' is included with Vim 7.1. If you
+name your Chordpro files with a .crd extension, Vim will automatically
+recognize them as chordpro files.

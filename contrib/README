@@ -1,0 +1,7 @@
+This directory holds files useful for integrating Chordie with other software.
+
+rpm
+	create a package for RPM-based systems
+
+vim
+	use Vim to edit Chordie (aka Chordpro) data files
