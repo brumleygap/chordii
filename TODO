@@ -1,4 +1,6 @@
 [_] use system getopt library
+[_] implement PDF generation
+[_] Unicode
 [_] create debian package
 [_] abstract version information from patchlevel.h
 	[_] RPM and DEB generation scripts should use same version numbers
