@@ -15,5 +15,8 @@
     along with Chordie.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define VERSION "3.6"
+#ifndef VERSION
+# define VERSION "4.0"
+#endif
+
 #define PATCH_LEVEL "0"
