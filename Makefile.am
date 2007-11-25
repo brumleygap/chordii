@@ -1,2 +1,2 @@
 SUBDIRS = src
-EXTRA_DIST = doc/* examples/*
+EXTRA_DIST = examples/*
