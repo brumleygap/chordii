@@ -329,7 +329,7 @@ void do_about ()
 	printf("professional looking, impress-your-friends sheet-music suitable for printing\n");
 	printf("on your nearest PostScript printer.\n");
 	printf("\n");
-	printf("To learn more about Chordie, look for the man page or do \"chord -h\" for\n");
+	printf("To learn more about Chordie, look for the man page or do \"chordie -h\" for\n");
 	printf("the list of options.\n");
 	printf("\n");
 	printf("			--0--\n");
