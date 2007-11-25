@@ -41,6 +41,17 @@ char
 	*chord_line[MAXLINE],
 	*command_name;
 
+t_pagespec
+	pagespecs[] = {
+	  { "a4",     756.0, 36.0, 72.0, 595.0 },
+	  { "letter", 756.0, 40.0, 72.0, 612.0 },
+	};
+
+t_pagespec
+	*pagespec = pagespecs,
+	*rt_pagespec = NULL,
+	*rc_pagespec = NULL;
+
 int
 	c,			/* Current character in input file */
 	i_chord,		/* Index to 'chord' */
@@ -57,7 +68,7 @@ int
 	transpose = 0,		/* transposition value */
 	vpos,			/* Current PostScript position, in points */
 	col_vpos,		/* Beginning height of column, in points */
-	min_col_vpos = TOP,	/* lowest colums ending */
+	min_col_vpos,		/* lowest colums ending */
 	hpos,
 	h_offset = 0,		/* horizontal offset for multi-col output */
 	start_of_chorus,	/* Vertical positions of the chorus */
@@ -101,7 +112,7 @@ float
 	chord_inc,
 	scale = 1.0,		/* Current scale factor */
 	rotation = 0.0,		/* Current rotation */
-	page_ratio = ((TOP+BOTTOM)/WIDTH);
+	page_ratio;
 
 extern int nb_chord, first_ptr;
 extern struct chord_struct *so_chordtab;
@@ -110,6 +121,26 @@ extern struct toc_struct *so_toc ;
 extern char *optarg;
 extern int optind, opterr;
 
+
+/* --------------------------------------------------------------------------------*/
+t_pagespec *pagetype(name)
+     char *name;
+{
+  t_pagespec *t = pagespecs;
+  if ( name && *name ) {
+    while ( t < pagespecs+(sizeof(pagespecs)/sizeof(t_pagespec)) ) {
+      if ( !strncmp(name, t->name, MAXPAGENAME) ) {
+	break;
+      }
+      t++;
+    }
+    if ( t >= pagespecs+(sizeof(pagespecs)/sizeof(t_pagespec)) ) {
+      error("unrecognized page type");
+      t = pagespecs;
+    }
+  }
+  return t;
+}
 
 /* --------------------------------------------------------------------------------*/
 void ps_fputc(fd, c)
@@ -260,7 +291,7 @@ char *command;
 	{
 	fprintf (stderr, "Usage: %s [options] file [file ...]\n", command);
 	fprintf (stderr, "Options:\n");
-	fprintf (stderr, "	-A                 : About CHORDIE...\n");
+	fprintf (stderr, "	-A                 : About Chordie...\n");
 	fprintf (stderr, "	-a                 : Automatic single space lines without chords\n");
 	fprintf (stderr, "	-c n               : Set chord size [9]\n");
 	fprintf (stderr, "	-C postscript_font : Set chord font\n");
@@ -280,6 +311,7 @@ char *command;
 	fprintf (stderr, "	-T postscript_font : Set text font\n");
 	fprintf (stderr, "	-V                 : Print version and patchlevel\n");
 	fprintf (stderr, "	-x n               : Transpose by 'n' half-tones\n");
+	fprintf (stderr, "	-P type            : Specify page size [letter, a4 (default)]\n");
 	fprintf (stderr, "	-2                 : 2 pages per sheet\n");
 	fprintf (stderr, "	-4                 : 4 pages per sheet\n");
 
@@ -289,15 +321,15 @@ char *command;
 /* --------------------------------------------------------------------------------*/
 void do_about ()
 	{
-	printf("CHORDIE: A lyrics and chords formatting program.\n");
+	printf("Chordie: A lyrics and chords formatting program.\n");
 	printf("===== \n");
 	printf("\n");;
-	printf("CHORDIE will read an ASCII file containing the lyrics of one or many\n");
-	printf("songs plus chord information. CHORDIE will then generate a photo-ready,\n");
+	printf("Chordie will read an ASCII file containing the lyrics of one or many\n");
+	printf("songs plus chord information. Chordie will then generate a photo-ready,\n");
 	printf("professional looking, impress-your-friends sheet-music suitable for printing\n");
 	printf("on your nearest PostScript printer.\n");
 	printf("\n");
-	printf("To learn more about CHORDIE, look for the man page or do \"chord -h\" for\n");
+	printf("To learn more about Chordie, look for the man page or do \"chord -h\" for\n");
 	printf("the list of options.\n");
 	printf("\n");
 	printf("			--0--\n");
@@ -618,6 +650,7 @@ void set_sys_def()
 	n_columns = 0;
 	max_columns = 1;
 	dummy_kcs.chord_name[0]='\0';
+	pagespec = pagetype(NULL);
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -629,6 +662,7 @@ void set_rc_def()
 	if (rc_no_grid != 0) no_grid =  rc_no_grid;
 	if (rc_text_font != NULL) text_font =  rc_text_font;
 	if (rc_chord_font != NULL) chord_font =  rc_chord_font;
+	if (rc_pagespec != NULL) pagespec = rc_pagespec;
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -640,6 +674,7 @@ void set_rt_def()
 	if (rt_no_grid != 0) no_grid =  rt_no_grid;
 	if (rt_text_font != NULL) text_font =  rt_text_font;
 	if (rt_chord_font != NULL) chord_font =  rt_chord_font;
+	if (rt_pagespec != NULL) pagespec = rt_pagespec;
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -648,6 +683,8 @@ void init_values()
 	set_sys_def();
 	set_rc_def();
 	set_rt_def();
+	min_col_vpos = TOP;	/* lowest colums ending */
+	page_ratio = ((TOP+BOTTOM)/WIDTH);
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -945,6 +982,10 @@ char *directive;
 		else if (!strcmp(comment, "center") || !strcmp(comment, "centre"))
 		  titles_flush = 1;
 		}
+	else if (!strcmp(command, "pagetype"))
+		{
+		  rc_pagespec = pagetype(strtok(NULL, ": "));
+		}
 	else
 		{
 		sprintf (mesg, "Invalid Directive : [%s]", command);
@@ -1153,11 +1194,12 @@ char **argv;
 	int c,i;
 
 	mesg = mesgbuf;
+
 /* Option Parsing */
 
 	command_name= argv[0];
 
-	while ((c = getopt(argc, argv, "aAc:C:dDgGhilLno:p:s:t:T:Vx:24")) != -1)
+	while ((c = getopt(argc, argv, "aAc:C:dDgGhilLno:p:P:s:t:T:Vx:24")) != -1)
 		switch (c) {
 
 		case 'd':
@@ -1283,6 +1325,10 @@ char **argv;
 			exit(0);
 			break;
 
+		case 'P':
+			rt_pagespec = pagetype(optarg);
+			break;
+
 		case '?':
 			do_help(argv[0]);
 			break;
@@ -1297,13 +1343,13 @@ char **argv;
 
 	if ((optind == argc) && isatty(0) && !dump_only)
 	{
-		fprintf (stderr, "Error: CHORDIE does not expect you to type the song on your keyboard.\n");
+		fprintf (stderr, "Error: Chordie does not expect you to type the song on your keyboard.\n");
 		fprintf (stderr, "Please either specify an input filename on the command line\n");
 		fprintf (stderr, "or have the input redirected or piped in.\n");
 		fprintf (stderr, "Examples:\n");
 		fprintf (stderr, "   %% chordie my_song.cho > myfile.ps\n");
 		fprintf (stderr, "   %% chordie < mysong.cho > myfile.ps\n");
-		fprintf (stderr, "Do \"chordie -h\" to learn about CHORDIE's options\n");
+		fprintf (stderr, "Do \"chordie -h\" to learn about Chordie's options\n");
 		exit(1);
 	}
 
@@ -1311,14 +1357,13 @@ char **argv;
 
 	if (isatty(1) && (!dump_only || postscript_dump))  /* 1 == stdout  */
 	{
-		fprintf (stderr, "Error: CHORDIE will not send PostScript to your terminal.\n");
+		fprintf (stderr, "Error: Chordie will not send PostScript to your terminal.\n");
 		fprintf (stderr, "Please either redirect (>) or pipe (|) the output.\n");
-		fprintf (stderr, "Exemples:\n");
+		fprintf (stderr, "Examples:\n");
 		fprintf (stderr, "   %% chordie my_song.cho > myfile.ps\n");
 		fprintf (stderr, "   %% chordie my_song.cho | lpr\n");
 		exit(1);
 	}
-
 
 /* File Processing */
 

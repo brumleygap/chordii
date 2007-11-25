@@ -48,29 +48,21 @@
 #define BASE_FRET_STR	"base-fret"
 #define FRETS_STR	"frets"
 
-#ifdef US
-#define TOP 756.0         /* 10.5 inches in points */
-#define BOTTOM 40.0        /* 0.5 inch in points */
-#define L_MARGIN 72.0      /* 1 inch in points */
-#define WIDTH 612.0        /* 8.5 inches in points */
-#else
-	/* Note: Not having access to an actual A4 PostScript printer
-		 the CHORD authors had to rely on input from beta-testers
-		 on what were the proper values to use for these fields.
-		 We though 813 was the right value for TOP.
-		 Some beta testers agreed, some thought it was better
-		 to leave the US value (756). We left 756 in and commented
-		 out the 813 entry. If the A4 page does not look to good for
-		 your taste, you may want to recompile with the other value.
-		 Thanks for your co-operation ... The authors */
+#define MAXPAGENAME 6
+typedef struct {
+  char name[MAXPAGENAME];
+  float top;
+  float bottom;
+  float margin;
+  float width;
+} t_pagespec;
 
-#define TOP 756.0         /* 10.5 inches in points */
-/* #define TOP 813 */        /* 28.7 cm or 11.30 inches in points */
-#define BOTTOM 36.0      /* 1.25 cm or 0.5 inch in points */
-#define L_MARGIN 72.0     /* 2.5 cm or 1 inch in points */
-#define WIDTH 595.0       /* 21 cm or 8.27 inches in points */
+extern t_pagespec *pagespec;
 
-#endif /* US */
+#define TOP		(pagespec->top)
+#define BOTTOM		(pagespec->bottom)
+#define L_MARGIN	(pagespec->margin)
+#define WIDTH		(pagespec->width)
 
 #define DELIM_STR       ": \t"
 
