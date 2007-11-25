@@ -1,14 +1,39 @@
+[_] replace current examples
+	use songs available under an open license
+[_] add unit tests
+[_] update RPM specfile for v4.0
+	[_] try building directly from tarball using 'rpmbuild -tb'
 [_] use system getopt library
+[_] clean up code
+	[_] reindent
+		suggestion: "indent -bli0 -nut -i4"
+	[_] update "K&R-style" function defs
+[_] allow GNU-style long options (--help, etc)
 [_] implement PDF generation
 [_] Unicode
-[_] create debian package
-[X] abstract version information from patchlevel.h
-[_] RPM and DEB generation scripts should use same version numbers
-[X] use GNU autotools
-[_] port to other operating systems
-	might just mean performing test compilations
+[_] distribution-specific packages
+	[_] Debian/Ubuntu
+		http://www.ibm.com/developerworks/linux/library/l-debpkg.html
+		http://www.inf.bme.hu/~pts/pts-debian-package-tutorial.txt
+		http://www.debian-administration.org/articles/336
+	[_] Mac OS X
 	[_] Windows
-	[_] OSX
+[_] abstract version information from patchlevel.h
+	[X] remove patchlevel.h in favor of config.h (trunk@23)
+	[_] RPM and DEB generation scripts should use same version numbers
+[_] port to other operating systems
+	[_] Windows
+	[_] Mac OS X
+[_] set up "continuous integration" cron job on sf.net shell server
+	[_] regularly check for new trunk commits
+	[_] automatically build and run unit tests
+	[_] post somewhere on the chordie sf.net Web site
+[_] graphical user interface
+	(not likely)
+[_] i18n, L10n
+	maybe just allowing Unicode text input would be good enough
+
+[X] use GNU autotools (trunk@13)
 
 --------------------------------------------------------------------------------
 vim:ft=vo_base
