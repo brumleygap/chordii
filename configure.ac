@@ -14,10 +14,12 @@
 # along with Chordie.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([Chordie], [4.0], [jvromans@users.sourceforge.net])
-AC_DEFINE([PATCH_LEVEL],["0"],[Define to the minor version (aka patch level) of this package.])
 
 AM_INIT_AUTOMAKE
-AC_CONFIG_HEADER([config.h])
+
+AC_DEFINE([PATCH_LEVEL],["0"],[Define to the minor version (aka patch level) of this package.])
+
+AC_CONFIG_HEADER([src/config.h])
 
 # Checks for programs.
 AC_PROG_CC
@@ -40,7 +42,7 @@ AC_REPLACE_FUNCS
 
 # Enforce programmer sanity.
 if test "$CC" = "gcc"; then
-  CFLAGS="$CFLAGS -Wall -pedantic -ansi -g"
+  CFLAGS="$CFLAGS -Wall -pedantic -g"
 fi
 AC_SUBST(CFLAGS)
 
