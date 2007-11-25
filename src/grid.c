@@ -30,6 +30,7 @@ extern int first_time_in_chordrc;
 extern char *mesg;
 extern int in_chordrc;
 extern int sort_type;
+extern char *text_font, *chord_font, *mono_font;
 
 /*--------------------------------------------------------------------------------*/
 void do_init_grid_ps()
@@ -1007,6 +1008,8 @@ int	PostScript;
 		do_end_of_page(TRUE);
         	printf ("%%%%Trailer\n");
         	printf ("%%%%Pages: %d 1\n", n_pages);
+		printf ("%%%%DocumentFonts: %s %s %s\n",
+			text_font, chord_font, mono_font);
         	printf ("%%%%EOF\n");
 		}
 	else {
