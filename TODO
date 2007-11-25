@@ -13,15 +13,21 @@
 	[_] Mac OS X
 	[_] Windows
 [_] abstract version information from patchlevel.h
+	[X] remove patchlevel.h in favor of config.h (trunk@23)
 	[_] RPM and DEB generation scripts should use same version numbers
-[_] use GNU autotools
 [_] port to other operating systems
 	[_] Windows
 	[_] Mac OS X
+[_] set up "continuous integration" cron job on sf.net shell server
+	[_] regularly check for new trunk commits
+	[_] automatically build and run unit tests
+	[_] post somewhere on the chordie sf.net Web site
 [_] graphical user interface
 	(not likely)
 [_] i18n, L10n
 	maybe just allowing Unicode text input would be good enough
+
+[X] use GNU autotools (trunk@13)
 
 --------------------------------------------------------------------------------
 vim:ft=vo_base
