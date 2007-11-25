@@ -4,36 +4,36 @@ Version: @VERSION@
 Release: 1
 Source: %{name}-%{version}.tar.gz
 Packager: Johan Vromans <jvromans@squirrel.nl>
-License: GNU Public License version 2 or above.
+URL: http://chordie.sourceforge.nl
+License: GNU Public License version 3 or above.
 Group: Utilities/Text
 BuildRoot: /var/tmp/%{name}-%{version}-buildroot
 %description
-This is a description of a utility called CHORD.
+This is a description of a utility called @PACKAGE_NAME@.
 
 It's purpose is to provide guitar players with a tool to produce good
-looking, self-descriptive music sheet from a text file.
+looking, self-descriptive music sheets from text files.
 
-CHORD read a text file containing the lyrics of a song, the chords to
-be played, their description and some other optional data to produce a
+@PACKAGE_NAME@ read text files containing the lyrics of songs, the chords to
+be played, their descriptions and some other optional data to produce a
 PostScript document that includes:
 
 	Centered titles
 	Chord names above the words
 	Graphical representation of the chords at the end of the songs
 
-CHORD also provides support for 
+@PACKAGE_NAME@ also provides support for 
 
 	Multiple columns on a page
 	Index of a songbook
-	Multiple logical pages per physical pages ( 1, 2 or 4)
+	Multiple logical pages per physical pages (1, 2 or 4)
 	Configurable fonts for the lyrics and the chord names
 	Multiple songs inside one file
 	The complete ISO 8859-1 character set
-and
 	Chorus marking
 
 %prep
-%setup
+%setup -q
 
 %build
 %configure
@@ -43,6 +43,6 @@ make
 
 %files
 %defattr(-,root,root)
-%doc README NEWS AUTHORS COPYING songs
+%doc README NEWS AUTHORS COPYING examples
 %{_bindir}/*
 # %{_mandir}/man1/*
