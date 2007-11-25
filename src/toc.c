@@ -20,7 +20,7 @@
 struct toc_struct *so_toc = NULL;
 struct toc_struct *cur_toc_entry;
 
-extern char title1;
+extern char title1[];
 extern int v_pages;
 extern int pagination;
 extern float scale;
@@ -120,14 +120,13 @@ new_sub = NULL;
 /* --------------------------------------------------------------------------------*/
 void build_ps_toc()
 	{
-	char line[MAXTOKEN];
 	struct toc_struct *toc_ptr;
 	struct sub_title_struct *sub_ptr;
 
 	debug("Debut de build_ps_toc");
 	/* print_toc_entries(); */
 
-	strcpy (&title1, "Index");
+	strcpy (title1, "Index");
 
 	if (v_pages % pagination)
 		do_end_of_page(TRUE);
@@ -145,7 +144,7 @@ void build_ps_toc()
 	set_text_font (text_size+10);
 	use_text_font();
 	printf ("(");
-	ps_puts (&title1);
+	ps_puts (title1);
 	printf (") dup stringwidth pop 2 div\n");
 	printf ("%f 2 div exch sub %d moveto\n", WIDTH, vpos);
 	printf ("show\n");

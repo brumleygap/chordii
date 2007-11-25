@@ -15,7 +15,6 @@
     along with Chordie.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
 #include "chordie.h"
 
 
@@ -314,7 +313,7 @@ buf[0]='\0';
 }
 /* --------------------------------------------------------------------------------*/
 
-main (argc, argv)
+int main (argc, argv)
 int argc;
 char **argv;
 

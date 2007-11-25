@@ -34,7 +34,7 @@ char *str;
 	strcpy(temp_str, str);
 	ptr=temp_str;
 
-	while (*ptr=(char) tolower((int) *ptr)) 
+	while ( (*ptr=(char) tolower((int) *ptr)) )
 		ptr++;
 
 	return(temp_str);
@@ -50,7 +50,7 @@ char *str;
 	strcpy(temp_str, str);
 	ptr=temp_str;
 
-	while (*ptr=(char) toupper((int) *ptr)) 
+	while ( (*ptr=(char) toupper((int) *ptr)) )
 		ptr++;
 
 	return(temp_str);

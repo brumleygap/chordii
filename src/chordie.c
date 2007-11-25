@@ -128,9 +128,9 @@ int c;
 		case '(' :
                		fprintf (fd, "\\%c", c); break;
 		case '\\' :
-			fprintf (fd, "\\\\", c); break;
+			fprintf (fd, "\\%c", c); break;
 		default:
-			fprintf (fd, "%c",c);
+			fprintf (fd, "%c", c);
 		}
         }
 /* --------------------------------------------------------------------------------*/
@@ -220,13 +220,14 @@ void do_start_of_page()
 		else if (v_pages== 4) do_translate(WIDTH-L_MARGIN, 0.0);
 		}
 
-	if (pagination== 2)
+	if (pagination== 2) {
 		if (v_pages == 1)
 			{
 			do_translate (0.0, -(TOP+BOTTOM+L_MARGIN/scale));
 			}
 		else if (v_pages == 2)
 			do_translate(WIDTH, 0.0);
+	}
 
 	vpos = TOP;
 	min_col_vpos = TOP;
@@ -390,6 +391,7 @@ char *chord;
 	for (j= i_text; chord_line[j] != NULL; j++);
 
 	if (j < MAXLINE)
+		{
 		if (strcmp(toupper_str(chord), NO_CHORD_STR))
 			{
 			ct_ptr = add_to_chordtab(chord);
@@ -397,6 +399,7 @@ char *chord;
 			}
 		else	chord_line[j] = NO_CHORD_STR;
 
+		}
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -439,8 +442,9 @@ void print_chord_line ()
 void init_ps()
 	{
 	printf ("%%!PS-Adobe-1.0\n");
-	printf ("%%%%Title: A song\n");
-	printf ("%%%%Creator: Martin Leclerc & Mario Dorion\n");
+	printf ("%%%%Title: A nicely formatted song sheet\n");
+	printf ("%%%%Creator: %s %s.%s\n",
+		PACKAGE_NAME, PACKAGE_VERSION, PATCH_LEVEL);
 	printf ("%%%%DocumentFonts: (atend)\n");
 	printf ("%%%%Pages: (atend)\n");
 	printf ("%%%%BoundingBox: 5 5 605 787\n");
@@ -1142,7 +1146,7 @@ void read_chordrc()
 
 
 /* --------------------------------------------------------------------------------*/
-main(argc, argv)
+int main(argc, argv)
 int argc;
 char **argv;
 	{

@@ -21,6 +21,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
+
+#ifdef HAVE_UNISTD_H
+ #include <unistd.h>
+#endif
 
 #include "config.h"
 
@@ -31,7 +36,7 @@
 #define MAXFONTS 16   /* Maximum number of different fonts in one execution */
 #define MAXTOKEN 256
 #define MAX_CHORD 1024
-#define CHORD_NAME_SZ   10
+#define CHORD_NAME_SZ   20
 #define MAXNOTE 8
 
 #define LONG_FINGERS	4
@@ -111,6 +116,8 @@ struct toc_struct {
 
 int do_define_chord();
 void build_ps_toc();
+void clean_chordtab();
+void clean_known_chords();
 void do_chorus_line();
 void do_end_of_page();
 void do_end_of_phys_page();
@@ -124,6 +131,7 @@ void draw_chords();
 void dump_chords();
 void init_known_chords();
 void init_ps();
+void init_values();
 void print_chord_line ();
 void print_re_encode();
 void print_text_line();

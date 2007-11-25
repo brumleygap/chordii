@@ -122,51 +122,6 @@ void do_init_grid_ps()
 }
 
 /*--------------------------------------------------------------------------------*/
-
-struct chord_struct* add_to_chordtab(chord)
-char *chord;
-{
-	struct chord_struct *ct_ptr, *new, **prev_ptr_handle;
-	struct kcs *kc_ptr;
-	char chord1[CHORD_NAME_SZ], chord2[CHORD_NAME_SZ];
-	int n;
-
-	ct_ptr = so_chordtab;
-	prev_ptr_handle = &so_chordtab;
-
-	strcpy(chord1, chord);
-	while (( ct_ptr != NULL ) &&
-		((n=chordcompare(chord1, strcpy(chord2,ct_ptr->chord->chord_name))) > 0))
-		{
-		prev_ptr_handle = &(ct_ptr->next);
-		ct_ptr = ct_ptr->next;
-		}
-
-
-	if ((ct_ptr != NULL) && (n == 0)) 
-		{
-		new=ct_ptr;
-		}
-	else
-		{
-		if ((kc_ptr=get_kc_entry (chord)) == NULL)
-			{
-			sprintf (mesg, "chord \'%s\' has never been defined", chord);
-			error(mesg);
-			learn_chord(chord, -2, -2, -2, -2, -2, -2, 0, CHORD_BUILTIN, CHORD_EASY);
-			kc_ptr=get_kc_entry (chord);
-			}
-
-		new = (struct chord_struct *) malloc (sizeof (dummy_chord_struct));
-		new->chord=kc_ptr;
-		new->next = ct_ptr;
-		*prev_ptr_handle = new;
-		}
-
-	return (new);
-}
-
-/*--------------------------------------------------------------------------------*/
 /* ChordCompare - provided by Leo Bicknell (ab147@freenet.acsu.buffalo.edu) */
 int chordcompare(chord1, chord2)
 char *chord1, *chord2;
@@ -231,149 +186,7 @@ char *chord1, *chord2;
 
 
 /*--------------------------------------------------------------------------------*/
-void moveto(new_hpos,new_vpos)
-int	new_hpos,new_vpos;
-{
-	if (new_hpos + grid_size + L_MARGIN > WIDTH)
-		{
-		new_hpos = L_MARGIN;
-		new_vpos -= 2*grid_size;
-		}
-
-	if (new_vpos < BOTTOM)
-		{
-		do_end_of_page(FALSE);
-		do_start_of_page();
-		new_vpos= TOP-2*grid_size;
-		}
-
-	printf ("%d %d moveto\n", new_hpos, new_vpos);
-	hpos= new_hpos;vpos = new_vpos;
-}
-
-/*--------------------------------------------------------------------------------*/
-void draw_known_chords()
-	{
-	struct kcs *kc_ptr;
-	char error_msg[MAXLINE];
-
-	moveto(WIDTH - grid_size - grid_size - L_MARGIN, vpos); 
-
-	kc_ptr = so_known_chords;
-	while (kc_ptr != NULL) 
-		{
-			moveto(hpos + 2 * grid_size, vpos);
-			printf("(");
-			ps_puts(kc_ptr->chord_name);
-			printf(") %d %d %d %d %d %d %d %d dots\n",
-				kc_ptr->s1,
-				kc_ptr->s2,
-				kc_ptr->s3,
-				kc_ptr->s4,
-				kc_ptr->s5,
-				kc_ptr->s6,
-				kc_ptr->displ,
-				kc_ptr->origin);
-		kc_ptr = kc_ptr->next;
-		}
-	}
-
-/*--------------------------------------------------------------------------------*/
-void draw_chords()
-	{
-	struct chord_struct *ct_ptr;
-	struct kcs *kc_ptr;
-	char error_msg[MAXLINE];
-
-	moveto(WIDTH - grid_size - grid_size - L_MARGIN, vpos); 
-	ct_ptr= so_chordtab;
-
-	while (ct_ptr != NULL) 
-		{
-		if (!no_easy_grids || no_easy_grids && ct_ptr->chord->difficult) 
-			{
-			moveto(hpos + 2 * grid_size, vpos);
-			printf("(");
-			ps_puts(ct_ptr->chord->chord_name);
-			printf(") %d %d %d %d %d %d %d %d dots\n",
-				ct_ptr->chord->s1,
-				ct_ptr->chord->s2,
-				ct_ptr->chord->s3,
-				ct_ptr->chord->s4,
-				ct_ptr->chord->s5,
-				ct_ptr->chord->s6,
-				ct_ptr->chord->displ,
-				ct_ptr->chord->origin);
-			}
-		ct_ptr = ct_ptr->next;
-		}
-	}
-
-/*--------------------------------------------------------------------------------*/
-clean_chordtab()
-	{
-	struct chord_struct *ct_ptr, *ct_next; 
-	ct_ptr= so_chordtab;
-
-	while (ct_ptr != NULL) 
-		{
-		ct_next = ct_ptr->next;
-		free(ct_ptr);
-		ct_ptr=ct_next;
-		}
-	so_chordtab=NULL;
-	}
-
-/*--------------------------------------------------------------------------------*/
-clean_known_chords()
-	{
-	struct kcs *kc_ptr, **prev_kc_ptr;
-
-	kc_ptr = so_known_chords;
-	prev_kc_ptr = &so_known_chords;
-	while (kc_ptr != NULL) 
-		{
-		if (kc_ptr->origin == CHORD_DEFINED )
-			/* remove from known chords */
-			{
-			*prev_kc_ptr = kc_ptr->next;
-			free(kc_ptr);
-			kc_ptr=*prev_kc_ptr;
-			}
-		else
-			{
-			prev_kc_ptr= &(kc_ptr->next);
-			kc_ptr=kc_ptr->next;
-			}
-		}
-	}
-/*--------------------------------------------------------------------------------*/
-count_known_chords() /* Debugging routines only */
-	{
-	struct kcs *kc_ptr;
-	int int_count = 0;
-	int rc_count = 0;
-	int song_count = 0;
-
-	kc_ptr = so_known_chords;
-	while (kc_ptr != NULL) 
-		{
-		if (kc_ptr->origin == CHORD_BUILTIN)
-			int_count++;
-		else if (kc_ptr->origin == CHORD_DEFINED)
-			{
-			song_count++;
-			}
-		else if (kc_ptr->origin == CHORD_IN_CHORDRC)
-			{
-			rc_count++;
-			}
-		kc_ptr=kc_ptr->next;
-		}
-	fprintf (stderr, "%d builtin, %d in chordrc, %d in song\n", int_count, rc_count, song_count);  
-	}
-/*--------------------------------------------------------------------------------*/
-learn_chord(chord, s1, s2, s3, s4, s5, s6, displ, origin, difficult)
+void learn_chord(chord, s1, s2, s3, s4, s5, s6, displ, origin, difficult)
 char 	*chord;
 int	displ;
 int	s1,s2,s3,s4,s5,s6;
@@ -382,7 +195,6 @@ int	origin, difficult;
 
 
 	struct kcs *kc_ptr, **prev_kc_ptr, *new_kc_ptr;
-	int cmp_ret=0;
 	char chord1[CHORD_NAME_SZ], chord2[CHORD_NAME_SZ];
 
 	kc_ptr = so_known_chords;
@@ -412,6 +224,191 @@ int	origin, difficult;
 	new_kc_ptr->difficult = difficult;
 	}
 
+/*--------------------------------------------------------------------------------*/
+
+struct chord_struct* add_to_chordtab(chord)
+char *chord;
+{
+	struct chord_struct *ct_ptr, *new, **prev_ptr_handle;
+	struct kcs *kc_ptr;
+	char chord1[CHORD_NAME_SZ], chord2[CHORD_NAME_SZ];
+	int n;
+
+	ct_ptr = so_chordtab;
+	prev_ptr_handle = &so_chordtab;
+
+	strcpy(chord1, chord);
+	while (( ct_ptr != NULL ) &&
+		((n=chordcompare(chord1, strcpy(chord2,ct_ptr->chord->chord_name))) > 0))
+		{
+		prev_ptr_handle = &(ct_ptr->next);
+		ct_ptr = ct_ptr->next;
+		}
+
+
+	if ((ct_ptr != NULL) && (n == 0)) 
+		{
+		new=ct_ptr;
+		}
+	else
+		{
+		if ((kc_ptr=get_kc_entry (chord)) == NULL)
+			{
+			sprintf (mesg, "chord \'%s\' has never been defined", chord);
+			error(mesg);
+			learn_chord(chord, -2, -2, -2, -2, -2, -2, 0, CHORD_BUILTIN, CHORD_EASY);
+			kc_ptr=get_kc_entry (chord);
+			}
+
+		new = (struct chord_struct *) malloc (sizeof (dummy_chord_struct));
+		new->chord=kc_ptr;
+		new->next = ct_ptr;
+		*prev_ptr_handle = new;
+		}
+
+	return (new);
+}
+
+/*--------------------------------------------------------------------------------*/
+void moveto(new_hpos,new_vpos)
+int	new_hpos,new_vpos;
+{
+	if (new_hpos + grid_size + L_MARGIN > WIDTH)
+		{
+		new_hpos = L_MARGIN;
+		new_vpos -= 2*grid_size;
+		}
+
+	if (new_vpos < BOTTOM)
+		{
+		do_end_of_page(FALSE);
+		do_start_of_page();
+		new_vpos= TOP-2*grid_size;
+		}
+
+	printf ("%d %d moveto\n", new_hpos, new_vpos);
+	hpos= new_hpos;vpos = new_vpos;
+}
+
+/*--------------------------------------------------------------------------------*/
+void draw_known_chords()
+	{
+	struct kcs *kc_ptr;
+
+	moveto(WIDTH - grid_size - grid_size - L_MARGIN, vpos); 
+
+	kc_ptr = so_known_chords;
+	while (kc_ptr != NULL) 
+		{
+			moveto(hpos + 2 * grid_size, vpos);
+			printf("(");
+			ps_puts(kc_ptr->chord_name);
+			printf(") %d %d %d %d %d %d %d %d dots\n",
+				kc_ptr->s1,
+				kc_ptr->s2,
+				kc_ptr->s3,
+				kc_ptr->s4,
+				kc_ptr->s5,
+				kc_ptr->s6,
+				kc_ptr->displ,
+				kc_ptr->origin);
+		kc_ptr = kc_ptr->next;
+		}
+	}
+
+/*--------------------------------------------------------------------------------*/
+void draw_chords()
+	{
+	struct chord_struct *ct_ptr;
+
+	moveto(WIDTH - grid_size - grid_size - L_MARGIN, vpos); 
+	ct_ptr= so_chordtab;
+
+	while (ct_ptr != NULL) 
+		{
+		if (!no_easy_grids ||
+		    ( no_easy_grids && ct_ptr->chord->difficult) )
+			{
+			moveto(hpos + 2 * grid_size, vpos);
+			printf("(");
+			ps_puts(ct_ptr->chord->chord_name);
+			printf(") %d %d %d %d %d %d %d %d dots\n",
+				ct_ptr->chord->s1,
+				ct_ptr->chord->s2,
+				ct_ptr->chord->s3,
+				ct_ptr->chord->s4,
+				ct_ptr->chord->s5,
+				ct_ptr->chord->s6,
+				ct_ptr->chord->displ,
+				ct_ptr->chord->origin);
+			}
+		ct_ptr = ct_ptr->next;
+		}
+	}
+
+/*--------------------------------------------------------------------------------*/
+void clean_chordtab()
+	{
+	struct chord_struct *ct_ptr, *ct_next; 
+	ct_ptr= so_chordtab;
+
+	while (ct_ptr != NULL) 
+		{
+		ct_next = ct_ptr->next;
+		free(ct_ptr);
+		ct_ptr=ct_next;
+		}
+	so_chordtab=NULL;
+	}
+
+/*--------------------------------------------------------------------------------*/
+void clean_known_chords()
+	{
+	struct kcs *kc_ptr, **prev_kc_ptr;
+
+	kc_ptr = so_known_chords;
+	prev_kc_ptr = &so_known_chords;
+	while (kc_ptr != NULL) 
+		{
+		if (kc_ptr->origin == CHORD_DEFINED )
+			/* remove from known chords */
+			{
+			*prev_kc_ptr = kc_ptr->next;
+			free(kc_ptr);
+			kc_ptr=*prev_kc_ptr;
+			}
+		else
+			{
+			prev_kc_ptr= &(kc_ptr->next);
+			kc_ptr=kc_ptr->next;
+			}
+		}
+	}
+/*--------------------------------------------------------------------------------*/
+void count_known_chords() /* Debugging routines only */
+	{
+	struct kcs *kc_ptr;
+	int int_count = 0;
+	int rc_count = 0;
+	int song_count = 0;
+
+	kc_ptr = so_known_chords;
+	while (kc_ptr != NULL) 
+		{
+		if (kc_ptr->origin == CHORD_BUILTIN)
+			int_count++;
+		else if (kc_ptr->origin == CHORD_DEFINED)
+			{
+			song_count++;
+			}
+		else if (kc_ptr->origin == CHORD_IN_CHORDRC)
+			{
+			rc_count++;
+			}
+		kc_ptr=kc_ptr->next;
+		}
+	fprintf (stderr, "%d builtin, %d in chordrc, %d in song\n", int_count, rc_count, song_count);  
+	}
 /*--------------------------------------------------------------------------------*/
 int check_old_define_syntax(temp_str, chord_name)
 char 	*temp_str;
@@ -980,10 +977,7 @@ int fretnum;
 void dump_chords(PostScript)
 int	PostScript;
 {
-	int i;
-	int idx;
 	struct kcs *kc_ptr;
-	struct chord_struct *ct_ptr;
 
 	if (PostScript)
 	{
