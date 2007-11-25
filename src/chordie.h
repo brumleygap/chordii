@@ -18,6 +18,8 @@
 #ifndef CHORDIE_H
 #define CHORDIE_H
 
+#include "config.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -26,8 +28,6 @@
 #ifdef HAVE_UNISTD_H
  #include <unistd.h>
 #endif
-
-#include "config.h"
 
 #define TRUE 1
 #define FALSE 0
