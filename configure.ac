@@ -17,6 +17,10 @@ AC_INIT(chordie, 4.0)
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 AC_REPLACE_FUNCS
+if test "$CC" = "gcc"; then
+  CFLAGS="$CFLAGS -Wall -pedantic -ansi -g"
+fi
+AC_SUBST(CFLAGS)
 AC_CONFIG_FILES([
   Makefile 
   src/Makefile

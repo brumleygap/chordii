@@ -15,6 +15,9 @@
     along with Chordie.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef CHORDIE_H
+#define CHORDIE_H
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -185,3 +188,4 @@ char *toupper_str();
 extern char *strtok();
 
 #endif /* ANSI_C */
+#endif /* CHORDIE_H */
