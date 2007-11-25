@@ -13,7 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Chordie.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT(chordie, 4.0)
+AC_INIT([Chordie], [4.0], [jvromans@users.sourceforge.net])
+AC_CONFIG_HEADERS(src/config.h)
+AC_DEFINE([PATCH_LEVEL],["0"],[Define to the minor version (aka patch level) of this package.])
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 AC_REPLACE_FUNCS
@@ -24,7 +26,6 @@ AC_SUBST(CFLAGS)
 AC_CONFIG_FILES([
   Makefile 
   src/Makefile
-  src/patchlevel.h
   contrib/rpm/chordie.spec
 ])
 AC_OUTPUT
