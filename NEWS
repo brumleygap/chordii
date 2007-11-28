@@ -9,10 +9,18 @@ NEW IN VERSION 4.0
 * Correct some PostScript errors.
 * Fix some crashes.
 
-NEW IN VERSION 3.6
+NEW IN VERSION 3.6.2
 
 **** Last known version by Martin Leclerc and
-**** Mario Dorion (March 1995)
+**** Mario Dorion (July 1995)
+
+* The CHORDRC variable points to the ".chordrc" file, which can be
+  called anything
+* -P option selects the paper size
+* better handling of -2 and -4 options
+* better handling of paper formats
+
+NEW IN VERSION 3.6
 
 * Song index is sorted
 * .chordrc is read only once per execution
