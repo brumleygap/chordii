@@ -48,22 +48,6 @@
 #define BASE_FRET_STR	"base-fret"
 #define FRETS_STR	"frets"
 
-#define MAXPAGENAME 6
-typedef struct {
-  char name[MAXPAGENAME];
-  float top;
-  float bottom;
-  float margin;
-  float width;
-} t_pagespec;
-
-extern t_pagespec *pagespec;
-
-#define TOP		(pagespec->top)
-#define BOTTOM		(pagespec->bottom)
-#define L_MARGIN	(pagespec->margin)
-#define WIDTH		(pagespec->width)
-
 #define DELIM_STR       ": \t"
 
 #define DEF_TEXT_SIZE 12
