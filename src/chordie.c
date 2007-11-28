@@ -22,16 +22,10 @@ static FILE *source_fd;
 char
 	text_line[MAXLINE],	/* Lyrics Buffer */
 	chord[MAXTOKEN],	/* Buffer for the name of the chord */
-	title1[MAXLINE];	/* Holds the first title line */
-
-char
+	title1[MAXLINE],	/* Holds the first title line */
 	source[MAXTOKEN],
-	directive[MAXLINE];	/* Buffer for the directive */
-
-char
-	i_input;		/* Input line pointer */
-
-char
+	directive[MAXLINE],	/* Buffer for the directive */
+	i_input,		/* Input line pointer */
 	mesgbuf[MAXTOKEN],
 	*mesg,
 	*text_font, *rt_text_font, *rc_text_font,	/* font for text */
@@ -41,29 +35,16 @@ char
 	*chord_line[MAXLINE],
 	*command_name;
 
-t_pagespec
-	pagespecs[] = {
-	  { "a4",     756.0, 36.0, 72.0, 595.0 },
-	  { "letter", 756.0, 40.0, 72.0, 612.0 },
-	};
-
-t_pagespec
-	*pagespec = pagespecs,
-	*rt_pagespec = NULL,
-	*rc_pagespec = NULL;
-
 int
 	c,			/* Current character in input file */
 	i_chord,		/* Index to 'chord' */
 	i_directive,		/* Index to 'directive' */
 	i_text,                 /* Index to 'text_line' */
-	in_chord,		/* Booleans indicating parsing status */
 	left_foot_even = -1,	 /* 0 for even page numbers on the right */
 				/* 1 for even page numbers on the left */
 	no_grid, rt_no_grid, rc_no_grid,
-	page_label = 1,		/* physical page number */
+	page_label = 0,		/* physical page number */
 	lpage_label = 1,	/* logical page number */
-	i_chord_ov,		/* Overflow Booleans */
 	pagination = 1,		/* virtual pages per physical pages */
 	transpose = 0,		/* transposition value */
 	vpos,			/* Current PostScript position, in points */
@@ -77,16 +58,18 @@ int
 	cur_text_size = 0,
 	text_size, rt_text_size, rc_text_size,          /* font size for 'text_font' */
 	grid_size, rt_grid_size, rc_grid_size,
-	n_pages = 1,		/* total physical page counter */
+	n_pages = 0,		/* total physical page counter */
 	v_pages = 1,		/* virtual pages */
 	n_lines = 1,		/* line number in input file */
 	max_columns = 1,	/* number of columns */
 	n_columns = 0,		/* counter of columns */
 	song_pages = 1,		/* song page counter */
+	titles_flush = 1,	/* center */
 	blank_space = 0;	/* consecutive blank line counter */
 
-int				/* BOOLEANS */
+int		/* BOOLEANS */
 	number_all = FALSE,	/* number the first page (set with -p 1) */
+	in_chord = FALSE,       /* Booleans indicating parsing status */
 	lyrics_only = FALSE,
 	dump_only = FALSE,
 	in_tab = FALSE,
@@ -95,6 +78,7 @@ int				/* BOOLEANS */
 	need_soc = FALSE,
 	do_toc = FALSE,
 	no_easy_grids = FALSE,
+	i_chord_ov,             /* Overflow Booleans */
 	i_directive_ov = FALSE,
 	i_text_ov = FALSE,
 	in_directive = FALSE,
@@ -105,14 +89,37 @@ int				/* BOOLEANS */
 	has_chord = FALSE,
 	title1_found = FALSE,
 	number_logical = FALSE,
-	titles_flush = 1,	/* center */
 	debug_mode = FALSE;
 
 float
 	chord_inc,
 	scale = 1.0,		/* Current scale factor */
 	rotation = 0.0,		/* Current rotation */
-	page_ratio;
+	margin,
+	top,
+	bottom,
+	height,
+	width;
+
+#define MAXPAGENAME 6
+typedef struct {
+	char name[MAXPAGENAME];
+	float height;
+	float width;
+} t_pagespec;
+
+t_pagespec
+	pagespecs[] = {
+	  { "letter", 792.0, 612.0 },
+	  { "us",     792.0, 612.0 },
+	  { "a4",     842.0, 595.0 },
+	};
+
+t_pagespec
+	*pagespec = pagespecs,	/* current */
+	*rt_pagespec = NULL,	/* from command line */
+	*rc_pagespec = NULL;	/* from chordrc */
+
 
 extern int nb_chord, first_ptr;
 extern struct chord_struct *so_chordtab;
@@ -155,9 +162,7 @@ int c;
 		switch ((char)c)
 		{
 		case ')' :
-               		fprintf (fd, "\\%c", c); break;
 		case '(' :
-               		fprintf (fd, "\\%c", c); break;
 		case '\\' :
 			fprintf (fd, "\\%c", c); break;
 		default:
@@ -222,12 +227,9 @@ float vert, horiz;
 	debug ("changing translation");
 	}
 /* --------------------------------------------------------------------------------*/
-void do_start_of_page()
-/*logical page ! */
+void init_page()
+/* common to do_start_of_page and to  init_ps */
 	{
-	v_pages++;
-	lpage_label++;
-
 	if (v_pages == 1)
 		{
 		n_pages++;
@@ -245,24 +247,46 @@ void do_start_of_page()
 
 	if (pagination== 4)
 		{
-		if (v_pages== 1) do_translate(L_MARGIN, (TOP+BOTTOM)*1.05);
-		else if (v_pages== 2) do_translate(WIDTH-L_MARGIN, 0.0);
-		else if (v_pages== 3) do_translate(-(WIDTH-L_MARGIN), -TOP*1.05);
-		else if (v_pages== 4) do_translate(WIDTH-L_MARGIN, 0.0);
+		if (v_pages== 1) do_translate(margin/2, height + 3*(bottom/scale)/4);
+		else if (v_pages== 2) do_translate(width, 0.0);
+		else if (v_pages== 3) do_translate(-width, -height);
+		else if (v_pages== 4) do_translate(width, 0.0);
 		}
 
 	if (pagination== 2) {
 		if (v_pages == 1)
 			{
-			do_translate (0.0, -(TOP+BOTTOM+L_MARGIN/scale));
+			do_translate ((bottom/scale)/2, -(height + (width/scale - height)/2 ));
 			}
 		else if (v_pages == 2)
-			do_translate(WIDTH, 0.0);
+			do_translate(width, 0.0);
 	}
 
-	vpos = TOP;
-	min_col_vpos = TOP;
-	hpos= L_MARGIN;
+/* draw a box around virtual page */
+/*
+	printf ("1  setlinewidth\n");
+	printf ("0  setgray\n");
+	printf ("newpath\n");
+	printf ("%d %d moveto\n", 0,          0);
+	printf ("%d %d lineto\n", (int)width, 0);
+	printf ("%d %d lineto\n", (int)width, (int)height);
+	printf ("%d %d lineto\n", 0,          (int)height);
+	printf ("%d %d lineto\n", 0,          0);
+	printf ("stroke\n");
+*/
+	}
+/* --------------------------------------------------------------------------------*/
+void do_start_of_page()
+/*logical page ! */
+	{
+	v_pages++;
+	lpage_label++;
+
+	init_page();
+
+	vpos = top;
+	min_col_vpos = top;
+	hpos= margin;
 	n_columns = 0;
 	song_pages++;
 	set_text_font(text_size); /*28/4/94 ML */
@@ -479,7 +503,7 @@ void init_ps()
 		PACKAGE_NAME, PACKAGE_VERSION, PATCH_LEVEL);
 	printf ("%%%%DocumentFonts: (atend)\n");
 	printf ("%%%%Pages: (atend)\n");
-	printf ("%%%%BoundingBox: 5 5 605 787\n");
+	printf ("%%%%BoundingBox: 5 5 %d %d\n", (int)(width-5), (int)(height-5));
 	printf ("%%%%EndComments\n");
 	printf ("/inch {72 mul } def\n");
 
@@ -490,26 +514,11 @@ void init_ps()
 
 	printf ("%%%%EndProlog\n");
 
-	printf ("%%%%Page: \"%d\" %d\n",n_pages, n_pages);
-	printf ("%%%%BeginPageSetup\n");
-	if (pagination > 1)
-		{
-		printf ("gsave\n");
-		printf ("%f %f scale\n", scale, scale);
-		printf ("%f rotate\n", rotation);
-		}
-	printf ("%%%%EndPageSetup\n");
-
-	vpos = TOP;
-	hpos = L_MARGIN;
+	vpos = top;
+	hpos = margin;
 	n_columns=0;
 
-	if (pagination== 4)
-		do_translate ( L_MARGIN, TOP+BOTTOM);
-	else if (pagination== 2) 
-		{
-		do_translate (0.0, -(TOP+BOTTOM+L_MARGIN/scale));
-		}
+	init_page();
 	}
 
 
@@ -519,27 +528,52 @@ int pnum;
 	{
 	printf ("1  setlinewidth\n");
 	printf ("0  setgray\n");
-	printf ("newpath\n");
-	printf ("%f %f 10 sub moveto\n", L_MARGIN, BOTTOM); 
-	printf ("%f 0 rlineto\n", WIDTH - L_MARGIN * 2);
-	printf ("stroke\n");
-
 	set_text_font(DEF_TEXT_SIZE - 2);
 	use_text_font();
-	if (page_label % 2 == left_foot_even)  /* left side */
+
+	if (pagination == 2)
 		{
-		printf ("1 inch %f 3 div moveto\n", BOTTOM); 
-		if (pagination == 2)
-			printf ("-500 0 rmoveto\n");
-		printf ("(Page %d)\n", pnum);
+		printf ("newpath\n");
+		printf ("%f %f moveto\n", width - margin/4, bottom/2); 
+		printf ("%f %f rlineto\n", 0.0, top);
+		printf ("stroke\n");
+	
+		printf ("gsave\n");
+		printf ("%f rotate\n",rotation);
+		if (page_label % 2 == left_foot_even)  /* left side */
+			{
+			printf ("%f %f moveto\n", margin/2, -(width-bottom/4)); 
+			printf ("(Page %d)\n", pnum);
+			}
+		else                               /* right side */
+			{ 
+			printf ("(Page %d) dup stringwidth pop\n", pnum);
+			printf ("%f exch sub %f moveto\n",
+				height-margin/2, -(width-bottom/4)); 
+			}
+		printf ("show\n");
+		printf ("grestore\n");
 		}
-	else                               /* right side */
-		{ 
-		printf ("(Page %d) dup stringwidth pop\n", pnum);
-		printf ("%f exch sub 1 inch sub %f 3 div moveto\n",
-			WIDTH, BOTTOM); 
+	else
+		{
+		printf ("newpath\n");
+		printf ("%f %f moveto\n", margin, bottom - 10); 
+		printf ("%f 0 rlineto\n", width - margin * 2);
+		printf ("stroke\n");
+	
+		if (page_label % 2 == left_foot_even)  /* left side */
+			{
+			printf ("1 inch %f 3 div moveto\n", bottom); 
+			printf ("(Page %d)\n", pnum);
+			}
+		else                               /* right side */
+			{ 
+			printf ("(Page %d) dup stringwidth pop\n", pnum);
+			printf ("%f exch sub 1 inch sub %f 3 div moveto\n",
+				width, bottom); 
+			}
+		printf ("show\n");
 		}
-	printf ("show\n");
 	}
 /* --------------------------------------------------------------------------------*/
 void do_end_of_phys_page()
@@ -579,7 +613,7 @@ int	force_physical;
 		ps_puts(&title1[0]);
 		printf (") dup stringwidth pop 2 div\n");
 		printf ("%f 2 div exch sub %f 3 div moveto\n",
-			WIDTH, BOTTOM);
+			width, bottom);
 		printf ("show\n");
 		set_text_font(text_size);
 		}
@@ -604,8 +638,8 @@ int	force_physical;
 		v_pages = 0;
 		}
 	n_columns = 0;
-	min_col_vpos = TOP;
-	col_vpos = TOP;
+	min_col_vpos = top;
+	col_vpos = top;
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -622,7 +656,7 @@ void do_end_of_column()
 		if (vpos < min_col_vpos )
 			min_col_vpos = vpos;
 		vpos = col_vpos;
-		hpos = L_MARGIN + (n_columns * h_offset);
+		hpos = margin + (n_columns * h_offset);
 		}
 	}
 /* --------------------------------------------------------------------------------*/
@@ -650,7 +684,6 @@ void set_sys_def()
 	n_columns = 0;
 	max_columns = 1;
 	dummy_kcs.chord_name[0]='\0';
-	pagespec = pagetype(NULL);
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -683,8 +716,27 @@ void init_values()
 	set_sys_def();
 	set_rc_def();
 	set_rt_def();
-	min_col_vpos = TOP;	/* lowest colums ending */
-	page_ratio = ((TOP+BOTTOM)/WIDTH);
+
+	height = pagespec->height;
+	width  = pagespec->width;
+
+	top = height - 36.0;
+	bottom = 40.0;
+	margin = 72.0;
+	min_col_vpos = top;		/* lowest colums ending */
+
+	switch (pagination) 
+		{
+		case 1:
+			break;
+		case 2: 
+			scale = (height/2 - bottom)/width;
+			break;
+		case 4:
+			scale = ((height - bottom)/2)/height;
+			break;
+		}
+
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -709,11 +761,9 @@ void advance(amount)
 int amount;
 	{
 	vpos = vpos - amount;     /* Affect text positionning ! */
-	if (vpos < BOTTOM )
+	if (vpos < bottom )
 		{
-		/* do_end_of_page(FALSE); */
 		do_end_of_column();
-		/* do_start_of_page(); */
 		}
 	}
 
@@ -733,7 +783,7 @@ void print_text_line()
 		advance (chord_size + 1);
 
 		if ( ( text_line[i] != '\0' )
-		  && ( vpos - text_size <= BOTTOM))
+		  && ( vpos - text_size <= bottom))
 			advance (text_size);
 
 		if (need_soc)
@@ -768,7 +818,7 @@ void print_text_line()
 
 	i_text = 0;
 	i_text_ov = FALSE;
-	/* hpos = L_MARGIN; */
+	/* hpos = margin; */
 	has_chord = FALSE;
 	}
 
@@ -781,7 +831,7 @@ char	*title;
 	use_text_font();
 	switch (titles_flush) {
 	  case 0:
-	  printf ("%f %d moveto (", L_MARGIN, vpos);
+	  printf ("%f %d moveto (", margin, vpos);
 	  ps_puts(title);
 	  printf (") show\n");
 	  break;
@@ -789,7 +839,7 @@ char	*title;
 	  printf ("(");
 	  ps_puts(title);
 	  printf (") dup stringwidth pop 2 div\n");
-	  printf ("%f 2 div exch sub %d moveto\n", WIDTH, vpos);
+	  printf ("%f 2 div exch sub %d moveto\n", width, vpos);
 	  printf ("show\n");
 	}
 	vpos = vpos - text_size - 5;
@@ -809,7 +859,7 @@ char	*sub_title;
 	use_text_font();
 	switch (titles_flush) {
 	  case 0:
-	  printf ("%f %d moveto (", L_MARGIN, vpos);
+	  printf ("%f %d moveto (", margin, vpos);
 	  ps_puts(sub_title);
 	  printf (") show\n");
 	  break;
@@ -817,7 +867,7 @@ char	*sub_title;
 	  printf ("(");
 	  ps_puts(sub_title);
 	  printf (") dup stringwidth pop 2 div\n");
-	  printf ("%f 2 div exch sub %d moveto\n", WIDTH , vpos);
+	  printf ("%f 2 div exch sub %d moveto\n", width , vpos);
 	  printf ("show\n");
 	}
 	vpos = vpos - text_size ;
@@ -966,7 +1016,7 @@ char *directive;
 			max_columns = i;
 			n_columns = 0;
 			col_vpos = vpos;
-			h_offset = (int)(( WIDTH - L_MARGIN) / max_columns);
+			h_offset = (int)(( width - margin) / max_columns);
 			}
 		}
 	else if (!strcmp(command, "new_physical_page") || !strcmp(command,"npp"))
@@ -1166,9 +1216,17 @@ void read_chordrc()
 	char chordrc[MAXTOKEN];
 	FILE *chordrc_fd;
 	int n_lines_save;
+	char *env_var = getenv("CHORDIERC");
 
-	strcpy (chordrc, getenv ("HOME"));
-	strcat (chordrc,"/.chordierc\0");
+	if (env_var)
+		{
+		strcpy (chordrc, env_var);
+		}
+	else
+		{
+		strcpy (chordrc, getenv ("HOME"));
+		strcat (chordrc,"/.chordierc\0");
+		}
 	current_file = chordrc;
 	chordrc_fd = fopen (chordrc, "r");
 	if (chordrc_fd != NULL)
@@ -1194,7 +1252,6 @@ char **argv;
 	int c,i;
 
 	mesg = mesgbuf;
-
 /* Option Parsing */
 
 	command_name= argv[0];
@@ -1278,13 +1335,11 @@ char **argv;
 
 		case '2':
 			pagination= 2;
-			scale = (WIDTH - L_MARGIN)/(TOP + BOTTOM);
 			rotation= 90.0;
 			break;
 
 		case '4':
 			pagination= 4;
-			scale = ((WIDTH - L_MARGIN)/2.1)/(WIDTH - L_MARGIN);
 			break;
 
 		case 'i': /* generate in index */
@@ -1347,8 +1402,8 @@ char **argv;
 		fprintf (stderr, "Please either specify an input filename on the command line\n");
 		fprintf (stderr, "or have the input redirected or piped in.\n");
 		fprintf (stderr, "Examples:\n");
-		fprintf (stderr, "   %% chordie my_song.cho > myfile.ps\n");
-		fprintf (stderr, "   %% chordie < mysong.cho > myfile.ps\n");
+		fprintf (stderr, "   $ chordie my_song.cho > myfile.ps\n");
+		fprintf (stderr, "   $ chordie < mysong.cho > myfile.ps\n");
 		fprintf (stderr, "Do \"chordie -h\" to learn about Chordie's options\n");
 		exit(1);
 	}
@@ -1360,8 +1415,8 @@ char **argv;
 		fprintf (stderr, "Error: Chordie will not send PostScript to your terminal.\n");
 		fprintf (stderr, "Please either redirect (>) or pipe (|) the output.\n");
 		fprintf (stderr, "Examples:\n");
-		fprintf (stderr, "   %% chordie my_song.cho > myfile.ps\n");
-		fprintf (stderr, "   %% chordie my_song.cho | lpr\n");
+		fprintf (stderr, "   $ chordie my_song.cho > myfile.ps\n");
+		fprintf (stderr, "   $ chordie my_song.cho | lpr\n");
 		exit(1);
 	}
 
