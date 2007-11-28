@@ -28,6 +28,7 @@ extern int number_all;
 extern int song_pages;
 extern int text_size;
 extern int vpos;
+extern float top, bottom, l_margin, width;
 
 struct toc_struct *toc_ptr;
 struct sub_title_struct **sub_ptr_handle;
@@ -146,7 +147,7 @@ void build_ps_toc()
 	printf ("(");
 	ps_puts (title1);
 	printf (") dup stringwidth pop 2 div\n");
-	printf ("%f 2 div exch sub %d moveto\n", WIDTH, vpos);
+	printf ("%f 2 div exch sub %d moveto\n", width, vpos);
 	printf ("show\n");
 	advance(text_size);
 
@@ -156,7 +157,7 @@ void build_ps_toc()
 		{
 
 		/* title */
-		if ( vpos < BOTTOM + 3 * text_size)
+		if ( vpos < bottom + 3 * text_size)
 			{
 			advance (vpos);
 			song_pages= 0;
