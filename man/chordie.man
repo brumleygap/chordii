@@ -76,6 +76,9 @@ Numbers the pages consecutively starting with \fIfirst_page\fR (e.g.
 and page numbers are only put on subsequent pages of multiple page
 songs.
 .TP 8
+.B \-P " paper_size" 
+Specifies the paper size, either "us" or "a4".
+.TP 8
 .B \-s \fIgrid_size\fB
 Sets the size of the chord grids.
 .TP 8
