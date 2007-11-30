@@ -50,6 +50,6 @@ AC_SUBST(CFLAGS)
 AC_CONFIG_FILES([
   Makefile 
   src/Makefile
-  contrib/rpm/chordie.spec
+  chordie.spec
 ])
 AC_OUTPUT
