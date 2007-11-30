@@ -134,6 +134,7 @@ t_pagespec *pagetype(name)
      char *name;
 {
   t_pagespec *t = pagespecs;
+  name = tolower_str(name);
   if ( name && *name ) {
     while ( t < pagespecs+(sizeof(pagespecs)/sizeof(t_pagespec)) ) {
       if ( !strncmp(name, t->name, MAXPAGENAME) ) {
@@ -1034,6 +1035,8 @@ char *directive;
 		}
 	else if (!strcmp(command, "pagetype"))
 		{
+		  if (!in_chordrc)
+		    error("{pagetype} may not be used inside songs");
 		  rc_pagespec = pagetype(strtok(NULL, ": "));
 		}
 	else
