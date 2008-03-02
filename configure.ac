@@ -1,19 +1,19 @@
-# This file is part of Chordie.
+# This file is part of Chordii.
 #
-# Chordie is free software: you can redistribute it and/or modify
+# Chordii is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Chordie is distributed in the hope that it will be useful,
+# Chordii is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Chordie.  If not, see <http://www.gnu.org/licenses/>.
+# along with Chordii.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Chordie], [4.0], [jvromans@users.sourceforge.net])
+AC_INIT([Chordii], [4.0], [jvromans@users.sourceforge.net])
 
 AM_INIT_AUTOMAKE
 
@@ -50,6 +50,6 @@ AC_SUBST(CFLAGS)
 AC_CONFIG_FILES([
   Makefile 
   src/Makefile
-  chordie.spec
+  chordii.spec
 ])
 AC_OUTPUT

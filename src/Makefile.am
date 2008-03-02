@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
-common = chordie.h common.c
-bin_PROGRAMS = chordie a2crd
-chordie_SOURCES = $(common) chordie.c xpose.c iso.c grid.c getopt.c toc.c
+common = chordii.h common.c
+bin_PROGRAMS = chordii a2crd
+chordii_SOURCES = $(common) chordii.c xpose.c iso.c grid.c getopt.c toc.c
 a2crd_SOURCES = $(common) a2crd.c
-chordie_LDADD = $(LIBOBJS)
+chordii_LDADD = $(LIBOBJS)
 a2crd_LDADD = $(LIBOBJS)

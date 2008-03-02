@@ -1,21 +1,21 @@
 /*
-    This file is part of Chordie.
+    This file is part of Chordii.
 
-    Chordie is free software: you can redistribute it and/or modify
+    Chordii is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Chordie is distributed in the hope that it will be useful,
+    Chordii is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Chordie.  If not, see <http://www.gnu.org/licenses/>.
+    along with Chordii.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "chordie.h"
+#include "chordii.h"
 
 static FILE *source_fd;
 
@@ -316,7 +316,7 @@ char *command;
 	{
 	fprintf (stderr, "Usage: %s [options] file [file ...]\n", command);
 	fprintf (stderr, "Options:\n");
-	fprintf (stderr, "	-A                 : About Chordie...\n");
+	fprintf (stderr, "	-A                 : About Chordii...\n");
 	fprintf (stderr, "	-a                 : Automatic single space lines without chords\n");
 	fprintf (stderr, "	-c n               : Set chord size [9]\n");
 	fprintf (stderr, "	-C postscript_font : Set chord font\n");
@@ -346,15 +346,15 @@ char *command;
 /* --------------------------------------------------------------------------------*/
 void do_about ()
 	{
-	printf("Chordie: A lyrics and chords formatting program.\n");
+	printf("Chordii: A lyrics and chords formatting program.\n");
 	printf("===== \n");
 	printf("\n");;
-	printf("Chordie will read an ASCII file containing the lyrics of one or many\n");
-	printf("songs plus chord information. Chordie will then generate a photo-ready,\n");
+	printf("Chordii will read an ASCII file containing the lyrics of one or many\n");
+	printf("songs plus chord information. Chordii will then generate a photo-ready,\n");
 	printf("professional looking, impress-your-friends sheet-music suitable for printing\n");
 	printf("on your nearest PostScript printer.\n");
 	printf("\n");
-	printf("To learn more about Chordie, look for the man page or do \"chordie -h\" for\n");
+	printf("To learn more about Chordii, look for the man page or do \"chordii -h\" for\n");
 	printf("the list of options.\n");
 	printf("\n");
 	printf("			--0--\n");
@@ -1219,7 +1219,7 @@ void read_chordrc()
 	char chordrc[MAXTOKEN];
 	FILE *chordrc_fd;
 	int n_lines_save;
-	char *env_var = getenv("CHORDIERC");
+	char *env_var = getenv("CHORDRC");
 
 	if (env_var)
 		{
@@ -1228,7 +1228,7 @@ void read_chordrc()
 	else
 		{
 		strcpy (chordrc, getenv ("HOME"));
-		strcat (chordrc,"/.chordierc\0");
+		strcat (chordrc,"/.chordrc\0");
 		}
 	current_file = chordrc;
 	chordrc_fd = fopen (chordrc, "r");
@@ -1401,13 +1401,13 @@ char **argv;
 
 	if ((optind == argc) && isatty(0) && !dump_only)
 	{
-		fprintf (stderr, "Error: Chordie does not expect you to type the song on your keyboard.\n");
+		fprintf (stderr, "Error: Chordii does not expect you to type the song on your keyboard.\n");
 		fprintf (stderr, "Please either specify an input filename on the command line\n");
 		fprintf (stderr, "or have the input redirected or piped in.\n");
 		fprintf (stderr, "Examples:\n");
-		fprintf (stderr, "   $ chordie my_song.cho > myfile.ps\n");
-		fprintf (stderr, "   $ chordie < mysong.cho > myfile.ps\n");
-		fprintf (stderr, "Do \"chordie -h\" to learn about Chordie's options\n");
+		fprintf (stderr, "   $ chordii my_song.cho > myfile.ps\n");
+		fprintf (stderr, "   $ chordii < mysong.cho > myfile.ps\n");
+		fprintf (stderr, "Do \"chordii -h\" to learn about Chordii's options\n");
 		exit(1);
 	}
 
@@ -1415,11 +1415,11 @@ char **argv;
 
 	if (isatty(1) && (!dump_only || postscript_dump))  /* 1 == stdout  */
 	{
-		fprintf (stderr, "Error: Chordie will not send PostScript to your terminal.\n");
+		fprintf (stderr, "Error: Chordii will not send PostScript to your terminal.\n");
 		fprintf (stderr, "Please either redirect (>) or pipe (|) the output.\n");
 		fprintf (stderr, "Examples:\n");
-		fprintf (stderr, "   $ chordie my_song.cho > myfile.ps\n");
-		fprintf (stderr, "   $ chordie my_song.cho | lpr\n");
+		fprintf (stderr, "   $ chordii my_song.cho > myfile.ps\n");
+		fprintf (stderr, "   $ chordii my_song.cho | lpr\n");
 		exit(1);
 	}
 
