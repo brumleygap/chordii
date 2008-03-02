@@ -1,11 +1,11 @@
-.TH chordie l "September 1993" "Utilities"
+.TH chordii l "September 1993" "Utilities"
 .SH NAME
-chordie \- Produce a professional looking PostScript sheet-music from an ascii file containing lyrics and chords information.
+chordii \- Produce a professional looking PostScript sheet-music from an ascii file containing lyrics and chords information.
 .SH SYNOPSIS
-.B chordie
+.B chordii
 [ option ...] [ filename... ]
 .SH DESCRIPTION
-.I chordie
+.I chordii
 produces a postscript document from a lyrics file containing chord
 indications and chorus delimiters. The document produced contains the
 lyrics of a song, with the guitar chords appearing above the right
@@ -15,7 +15,7 @@ the bottom of the last page.
 .SH OPTIONS
 .TP 8
 .B \-A
-Will print the "About CHORDIE..." message.
+Will print the "About CHORDII..." message.
 .TP 8
 .B \-a 
 Automatically single spaces lines that have no chords.
@@ -30,13 +30,13 @@ known to your PostScript Interpreter.
 .TP 8
 .B \-d
 Generates a text chord chart of all internally known chords as well as
-chords defined in the $HOME/.chordierc file. Chords defined in the .chordierc file
+chords defined in the $HOME/.chordrc file. Chords defined in the .chordrc file
 are identified with the "(local)" caption. The printout is suitable for input
-to the .chordierc file.
+to the .chordrc file.
 .TP 8
 .B \-D
 Generates a PostScript chord chart of all internally known chords as well as
-chords defined in the $HOME/.chordierc file. Chords defined in the .chordierc file
+chords defined in the $HOME/.chordrc file. Chords defined in the .chordrc file
 are identified with a small asterisk after the chord grid.
 .TP 8
 .B \-G
@@ -49,7 +49,7 @@ Disable printing of grids for "easy" chords. Whether a builtin chord is easy
 or not has been arbitrarily decided by the authors. The general rule was that
 any chord in its major, minor, 7th or minor 7th was "easy" while everything
 else (maj7, aug, dim, sus, etc...) was "difficult". All chords defined in the
-$HOME/.chordierc file or in the input file are defined as "difficult".
+$HOME/.chordrc file or in the input file are defined as "difficult".
 .TP 8
 .B \-h
 Prints a short options summary.
@@ -172,16 +172,16 @@ A value of 0 for a given string means it is to be played open, and will be marke
 by a small
 open circle above the string in the grid.  The strings are numbered in ascending
 order of tonality, starting on the low E (the top string).  On
-output, a chord defined in the user's .chordierc file will have a small
+output, a chord defined in the user's .chordrc file will have a small
 asterisk near its grid, a chord defined in a song will have two small
 asterixes.
 
 At the beginning of every song, the default chords are re-loaded and the
-user's .chordierc file is re-read. Chord definition of new chords inside
+user's .chordrc file is re-read. Chord definition of new chords inside
 the text of a song are only valid for that song.
 
 The syntax of a {define} directive has been modified in version 3.5.
-CHORDIE will attempt to recognize an old-formar {define} and will accept
+CHORDII will attempt to recognize an old-formar {define} and will accept
 it. It will, though, print a warning inviting you to modify your input
 file to use the new syntax (the exact {define} entry to use is provided
 as an example).
@@ -231,16 +231,16 @@ column, at the same height as the last "columns" statement if still
 on the same page, or at the top of the page otherwise.
 .SH FILES
 .TP 8
-.B $HOME/.chordierc
+.B $HOME/.chordrc
 Initial directives re-read after each song.
 .SH NOTES
-Run time options override settings from your .chordierc file. So the assignement sequence
-to, let's say, the text size will be: system default, .chordierc, run-time
+Run time options override settings from your .chordrc file. So the assignement sequence
+to, let's say, the text size will be: system default, .chordrc, run-time
 option, and finally from within the song itself.
 
 All keywords are case independent.
 .SH BUGS
-CHORDIE will not wrap long lines around the right margin.
+CHORDII will not wrap long lines around the right margin.
 .br
 White space is not inserted inside the text line, even if white space
 is inserted in the "chord" line above the text. The net effect is that 
