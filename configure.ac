@@ -50,6 +50,7 @@ AC_SUBST(CFLAGS)
 AC_CONFIG_FILES([
   Makefile 
   src/Makefile
+  man/Makefile
   chordii.spec
 ])
 AC_OUTPUT
