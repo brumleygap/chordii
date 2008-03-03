@@ -1,14 +1,13 @@
 # This Makefile will look for files with a .cho extension in the current
-# directory and process them into PostScript format using Chordie. To make a
+# directory and process them into PostScript format using Chordii. To make a
 # PDF, type "make SONGNAME.pdf". ps2pdf must be installed for this to work.
-
 
 # derive all *.ps targets from *.cho
 songs = $(patsubst %.cho,%.ps,$(wildcard *.cho))
 
 all: $(songs)
 
-# default pattern rule for engraving lead sheets (.cho -> .PS)
+# default pattern rule for engraving lead sheets (.cho -> .ps)
 %.ps: %.cho
 	chordie $< -o $@
 
