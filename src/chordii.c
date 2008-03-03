@@ -1219,7 +1219,8 @@ void read_chordrc()
 	char chordrc[MAXTOKEN];
 	FILE *chordrc_fd;
 	int n_lines_save;
-	char *env_var = getenv("CHORDRC");
+	char *env_var = getenv("CHORDIIRC");
+	if (!env_var) env_var = getenv("CHORDRC");
 
 	if (env_var)
 		{
