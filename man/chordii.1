@@ -1,4 +1,4 @@
-.TH chordii l "September 1993" "Utilities"
+.TH chordii l "March 2008" "Utilities"
 .SH NAME
 chordii \- Produce a professional looking PostScript sheet-music from an ascii file containing lyrics and chords information.
 .SH SYNOPSIS
@@ -11,6 +11,9 @@ indications and chorus delimiters. The document produced contains the
 lyrics of a song, with the guitar chords appearing above the right
 words. A representation of all chords used in the song is printed at
 the bottom of the last page.
+
+Extensive documentation can be found in the Chordii User Guide,
+available from the download page http://sourceforge.net/project/chordii.
 
 .SH OPTIONS
 .TP 8
@@ -126,6 +129,10 @@ Blanks inside a directive are not significant (except inside one of the \fIcomme
 
 Supported directives are:
 .TP 8
+.B \fBtitles: \fItype\fR
+Selects the placement of the titles. Currently supported are
+\fBleft\fR and \fBcenter\fP (default).
+.TP 8
 .B \fBstart_of_chorus\fR or \fBsoc\fR
 which indicates the start of a chorus (yep). The complete chorus will
 be highlighted by a change bar, to be easily located by the player.
@@ -185,6 +192,12 @@ CHORDII will attempt to recognize an old-formar {define} and will accept
 it. It will, though, print a warning inviting you to modify your input
 file to use the new syntax (the exact {define} entry to use is provided
 as an example).
+.TP 8
+.B \fBpagetype: \fItype\fR
+Selects the page type. Currently supported page types are \fBa4\fR and
+\fBletter\fP.
+.br
+This directive may only occur in the .chordrc.
 .TP 8
 .B textfont: postscript_font
 same as -T command option
@@ -254,11 +267,15 @@ odd number of page, the page number for the last page will be printed
 at the bottom right of the virtual page instead of the bottom right of
 the physical page.
 .SH COPYRIGHT
+Copyright 2008 The Chordii Project
+.br
 Copyright 1990-91-92-93 by Martin Leclerc and Mario Dorion
 .SH AUTHORS
-Martin Leclerc (Martin.Leclerc@Sun.COM)
+Johan Vromans <jvromans@squirrel.nl)
 .br
-and Mario Dorion (Mario.Dorion@Sun.COM)
+Martin Leclerc (Martin.Leclerc@Sun.COM *** DEFUNCT ***)
+.br
+and Mario Dorion (Mario.Dorion@Sun.COM *** DEFUNCT ***)
 
 .SH CONTRIBUTORS
 Steve Putz (putz@parc.xerox.com)
