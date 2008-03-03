@@ -4,7 +4,7 @@ Version: @VERSION@
 Release: 1
 Source: %{name}-%{version}.tar.gz
 Packager: Johan Vromans <jvromans@squirrel.nl>
-URL: http://chordie.sourceforge.nl
+URL: http://@PACKAGE@.sourceforge.net
 License: GNU Public License version 3 or above.
 Group: Utilities/Text
 BuildRoot: /var/tmp/%{name}-%{version}-buildroot
@@ -14,7 +14,7 @@ This is a description of a utility called @PACKAGE_NAME@.
 It's purpose is to provide guitar players with a tool to produce good
 looking, self-descriptive music sheets from text files.
 
-@PACKAGE_NAME@ read text files containing the lyrics of songs, the chords to
+@PACKAGE_NAME@ reads text files containing the lyrics of songs, the chords to
 be played, their descriptions and some other optional data to produce a
 PostScript document that includes:
 
