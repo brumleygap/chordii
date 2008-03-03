@@ -1,14 +1,14 @@
-Welcome to Chordie!
+Welcome to Chordii!
 
-Chordie is a fork of Chord[1]. After multiple failed attempts to
+Chordii is a fork of Chord[1]. After multiple failed attempts to
 contact the original authors, it was determined that Chord was
 unmaintained. Luckily, Chord was licensed under the GPL, so it then
-became Chordie so active development could continue.
+became Chordii so active development could continue.
 
-Chordie's purpose is to provide guitar players with a tool to produce
+Chordii's purpose is to provide guitar players with a tool to produce
 good looking, self-descriptive music sheets from text files.
 
-Chordie reads a text file containing the lyrics of a song, the chords
+Chordii reads a text file containing the lyrics of a song, the chords
 to be played, their description and some other optional data to
 produce a PostScript document that includes:
 
@@ -17,7 +17,7 @@ produce a PostScript document that includes:
 	Graphical representation of the chords at the end of the songs
 	Transposition
 
-Chordie also provides support for:
+Chordii also provides support for:
 
 	Multiple columns on a page
 	Index of a songbook
@@ -29,14 +29,19 @@ Chordie also provides support for:
 
 And, as they say, more... and even more to come!
 
-Chordie homepage: http://chordie.sourceforge.net/
-Project homepage: http://www.sourceforge.net/projects/chordie/
+Chordii homepage: http://chordii.sourceforge.net/
+Project homepage: http://www.sourceforge.net/projects/chordii/
+
+Initially, Chordii was named Chordie, but this has been changed on
+request to avoid confusion with the Chordie.Com web site.
 
 ===== Copyright =====
 
+Chordii version 4.1 and later is Copyright 2008 The Chordii Project
+
 Chordie version 4.0 and later is Copyright 2007 The Chordie Project
 
-Chordie is licensed following the conditions of the GNU Public License,
+Chordii is licensed following the conditions of the GNU Public License,
 version 3 or later.
 
 Chord version 3.6 Copyright 1992,1995 Martin Leclerc and Mario Dorion
