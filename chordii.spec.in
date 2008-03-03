@@ -8,6 +8,7 @@ URL: http://@PACKAGE@.sourceforge.net
 License: GNU Public License version 3 or above.
 Group: Utilities/Text
 BuildRoot: /var/tmp/%{name}-%{version}-buildroot
+Obsoletes: chordie chord
 %description
 This is a description of a utility called @PACKAGE_NAME@.
 
@@ -45,4 +46,4 @@ make
 %defattr(-,root,root)
 %doc README NEWS AUTHORS COPYING examples
 %{_bindir}/*
-# %{_mandir}/man1/*
+%{_mandir}/man1/*
