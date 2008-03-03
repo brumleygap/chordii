@@ -28,6 +28,8 @@
 	[_] regularly check for new trunk commits
 	[_] automatically build and run unit tests
 	[_] post somewhere on the chordie sf.net Web site
+	[_] perhaps a tool like Cruise Control would be useful for this task
+[_] use user-provided title for PostScript document title
 [_] graphical user interface
 	(not likely)
 [_] i18n, L10n
