@@ -15,6 +15,9 @@
 	[X] Debian/Ubuntu
 	[_] Mac OS X
 	[_] Windows
+[_] include in popular GNU/Linux distributions
+	[_] Fedora
+	[_] Debian
 [_] abstract version information from patchlevel.h
 	[X] remove patchlevel.h in favor of config.h (trunk@23)
 	[_] RPM and DEB generation scripts should use same version numbers
