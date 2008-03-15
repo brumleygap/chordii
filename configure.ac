@@ -17,7 +17,7 @@ AC_INIT([Chordii], [4.1], [jvromans@users.sourceforge.net])
 
 AM_INIT_AUTOMAKE
 
-AC_DEFINE([PATCH_LEVEL],["0"],[Define to the minor version (aka patch level) of this package.])
+AC_DEFINE([PATCH_LEVEL],["1"],[Define to the minor version (aka patch level) of this package.])
 
 AC_CONFIG_HEADER([src/config.h])
 
