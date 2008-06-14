@@ -1226,7 +1226,7 @@ void read_chordrc()
 		{
 		strcpy (chordrc, env_var);
 		}
-	else if (env_var = getenv("HOME"))
+	else if ( (env_var = getenv("HOME")) )
 		{
 		strcpy (chordrc, env_var);
 		strcat (chordrc,"/.chordrc\0");
