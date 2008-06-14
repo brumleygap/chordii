@@ -13,11 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Chordii.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Chordii], [4.1], [jvromans@users.sourceforge.net])
+AC_INIT([Chordii], [4.2], [jvromans@users.sourceforge.net])
 
 AM_INIT_AUTOMAKE
 
-AC_DEFINE([PATCH_LEVEL],["1"],[Define to the minor version (aka patch level) of this package.])
+PATCH_LEVEL=0
+AC_DEFINE_UNQUOTED([PATCH_LEVEL],["$PATCH_LEVEL"],[Define to the minor version (aka patch level) of this package.])
 
 AC_CONFIG_HEADER([src/config.h])
 
@@ -46,11 +47,14 @@ if test "$CC" = "gcc"; then
 fi
 AC_SUBST(CFLAGS)
 
+AC_SUBST([PATCH_LEVEL],$PATCH_LEVEL)
+
 # Desired output files.
 AC_CONFIG_FILES([
   Makefile 
   src/Makefile
   man/Makefile
   chordii.spec
+  windows/config.h
 ])
 AC_OUTPUT

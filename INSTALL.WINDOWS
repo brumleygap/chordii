@@ -1,0 +1,16 @@
+Basic Installation
+==================
+
+Building Chordii under Microsoft Windows requires the Microsoft C
+compiler version 4.2 or later, and the `nmake' utility (comes with
+MSC).
+
+The simplest way to compile this package is:
+
+  1. `cd' to the directory containing the package's source code.
+
+  2. `cd' to the `windows' directory.
+
+  3. Type `nmake'. This will compile and build `chordii.exe' and
+     `a2crd.exe'.
+

@@ -1226,10 +1226,14 @@ void read_chordrc()
 		{
 		strcpy (chordrc, env_var);
 		}
-	else
+	else if (env_var = getenv("HOME"))
 		{
-		strcpy (chordrc, getenv ("HOME"));
+		strcpy (chordrc, env_var);
 		strcat (chordrc,"/.chordrc\0");
+		}
+	else			/* Windows, most likely. */
+		{
+		strcpy (chordrc, "/chordrc\0");
 		}
 	current_file = chordrc;
 	chordrc_fd = fopen (chordrc, "r");
