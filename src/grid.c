@@ -232,7 +232,7 @@ char *chord;
 	struct chord_struct *ct_ptr, *new, **prev_ptr_handle;
 	struct kcs *kc_ptr;
 	char chord1[CHORD_NAME_SZ], chord2[CHORD_NAME_SZ];
-	int n;
+	int n = 0;
 
 	ct_ptr = so_chordtab;
 	prev_ptr_handle = &so_chordtab;

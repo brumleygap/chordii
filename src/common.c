@@ -71,7 +71,7 @@ char *err_str;
 void error_rt(err_str)
 char *err_str;
 {
-	extern int n_lines;
+  /* extern int n_lines; */
        	 	fprintf(stderr, "WARNING: %s defined as a run-time option\n\n",err_str);
 }
 
