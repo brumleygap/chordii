@@ -1,9 +1,12 @@
 Welcome to Chordii!
 
-Chordii is a fork of Chord[1]. After multiple failed attempts to
-contact the original authors, it was determined that Chord was
-unmaintained. Luckily, Chord was licensed under the GPL, so it then
-became Chordii so active development could continue.
+Chordii is a fork of Chord[1], a program very popular several years
+ago and most famous for its trendsetting 'ChordPro' music file format.
+
+After multiple failed attempts to contact the original authors, it was
+determined that Chord was unmaintained. Luckily, Chord was licensed
+under the GPL, so it was forked into Chordii and active development could
+continue.
 
 Chordii's purpose is to provide guitar players with a tool to produce
 good looking, self-descriptive music sheets from text files.
@@ -16,9 +19,6 @@ produce a PostScript document that includes:
 	Chord names above the words
 	Graphical representation of the chords at the end of the songs
 	Transposition
-
-Chordii also provides support for:
-
 	Multiple columns on a page
 	Index of a songbook
 	Multiple logical pages per physical pages (1, 2 or 4)
