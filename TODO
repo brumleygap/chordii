@@ -22,14 +22,17 @@
 	[X] remove patchlevel.h in favor of config.h (trunk@23)
 	[_] RPM and DEB generation scripts should use same version numbers
 [_] port to other operating systems
-	[_] Windows
-	[_] Mac OS X
+	[X] Windows
+	[X] Mac OS X
 [_] set up "continuous integration" cron job on sf.net shell server
 	[_] regularly check for new trunk commits
 	[_] automatically build and run unit tests
 	[_] post somewhere on the chordie sf.net Web site
 	[_] perhaps a tool like Cruise Control would be useful for this task
 [_] use user-provided title for PostScript document title
+[_] use user-provided margins for the document
+[_] better way to select which chords are printed
+
 [_] graphical user interface
 	(not likely)
 [_] i18n, L10n
