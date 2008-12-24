@@ -10,6 +10,8 @@
 	[_] update "K&R-style" function defs
 [_] allow GNU-style long options (--help, etc)
 [_] implement PDF generation
+	[_] pipe to ps2pdf
+	[_] use pango
 [_] Unicode
 [_] distribution-specific packages
 	[X] Debian/Ubuntu
@@ -32,6 +34,9 @@
 [_] use user-provided title for PostScript document title
 [_] use user-provided margins for the document
 [_] better way to select which chords are printed
+[_] transpose up different from transpose down
+[_] user defined (language specific) note names, e.g. German, Italian.
+	[_] transposable!
 
 [_] graphical user interface
 	(not likely)
