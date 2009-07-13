@@ -1145,7 +1145,12 @@ FILE *source_fd;
 				{
 				in_directive = FALSE;
 				directive[i_directive]= '\0';
-				for (; (c= getc(source_fd)) != '\n'; );
+				while (1) 
+					{
+					c = getc(source_fd);
+					if (c == '\n' || c == -1)
+						break;
+					}
 				i_input = 0;
 				do_directive(&directive[0]);
 				has_directive = FALSE;
@@ -1183,7 +1188,12 @@ FILE *source_fd;
 		case '#':
 			if (i_input == 1)
 				{
-				for (; (c= getc(source_fd)) != '\n'; );
+				while (1) 
+					{
+					c = getc(source_fd);
+					if (c == '\n' || c == -1)
+						break;
+					}
 				n_lines++;
 				i_input = 0;
 				break;
