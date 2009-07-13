@@ -1,49 +1,81 @@
 Summary: Print songsbooks (lyrics + chords)
 Name: @PACKAGE@
 Version: @VERSION@
-Release: 1
-Source: %{name}-%{version}.tar.gz
-Packager: Johan Vromans <jvromans@squirrel.nl>
+Release: 1%{?dist}
 URL: http://@PACKAGE@.sourceforge.net
-License: GNU Public License version 3 or above.
-Group: Utilities/Text
-BuildRoot: /var/tmp/%{name}-%{version}-buildroot
+Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Patch0: %{name}-%{version}-makefile.patch
+License: GPLv3+
+Group: Applications/Publishing
+BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 Obsoletes: chordie chord
+
 %description
-This is a description of a utility called @PACKAGE_NAME@.
+chordii provides guitar players and other musicians with a tool to
+produce good looking, self-descriptive music sheets from text files.
 
-It's purpose is to provide guitar players with a tool to produce good
-looking, self-descriptive music sheets from text files.
+chordii reads text files in chordpro format, containing the lyrics of
+songs, the chords to be played, their descriptions and some other
+optional data. It produces a PostScript document suitable for viewing
+and printing.
 
-@PACKAGE_NAME@ reads text files containing the lyrics of songs, the chords to
-be played, their descriptions and some other optional data to produce a
-PostScript document that includes:
-
-	Centered titles
-	Chord names above the words
-	Graphical representation of the chords at the end of the songs
-
-@PACKAGE_NAME@ also provides support for 
-
-	Multiple columns on a page
-	Index of a songbook
-	Multiple logical pages per physical pages (1, 2 or 4)
-	Configurable fonts for the lyrics and the chord names
-	Multiple songs inside one file
-	The complete ISO 8859-1 character set
-	Chorus marking
+chordii features include:
+ - centered titles,
+ - chord names above the words,
+ - chord diagrams at the end of the songs,
+ - multiple columns on a page,
+ - multiple logical pages per physical pages (1, 2 or 4),
+ - configurable fonts and sizes,
+ - the complete ISO 8859-1 character set,
+ - chorus marking,
+ - automated chord transposition,
+ - songbook creation: typeset multiple songs with page numbers and a
+   table of contents.
 
 %prep
 %setup -q
 
+# Fix Makefiles to avoid double install of manual pages.
+%patch0 -p0 -b .mak
+
 %build
 %configure
-make
+make %{?_smp_mflags}
 
-%makeinstall
+%install
+rm -rf %{buildroot}
+make DESTDIR=%{buildroot} INSTALL="install -p" install
+
+%clean
+rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
-%doc README NEWS AUTHORS COPYING examples
+%defattr(-,root,root,-)
+%doc README NEWS AUTHORS COPYING examples/
 %{_bindir}/*
 %{_mandir}/man1/*
+
+%changelog
+* Mon Jul 13 2009 Johan Vromans <jvromans@squirrel.nl> - 4.3-1
+- Upgrade original licence
+
+* Sat Jan 31 2009 Johan Vromans <jvromans@squirrel.nl> - 4.2-5
+- Changed examples/* to examples/ to include all examples in a dir
+
+* Fri Jan 30 2009 Johan Vromans <jvromans@squirrel.nl> - 4.2-4
+- Fixed changelog entries involving %% to prevent macro expansion
+
+* Fri Jan 30 2009 Johan Vromans <jvromans@squirrel.nl> - 4.2-3
+- Fixed URL and Source urls
+- Added %%{?dist} to Release
+- Fixed missing (optional) argument to %%defattr
+- Changed examples to examples/* to include all examples
+
+* Fri Jan 30 2009 Johan Vromans <jvromans@squirrel.nl> - 4.2-2
+- Update description
+- Add patch to fix Makefiles to avoid double install of manual pages
+- use smp_mflags
+- use install -p
+
+* Thu Jan 29 2009 Johan Vromans <jvromans@squirrel.nl> - 4.2-1
+- First Fedora version
