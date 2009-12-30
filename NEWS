@@ -1,7 +1,8 @@
 NEW IN VERSION 4.3
 
-* Updated original COPYRIGHT notice to the most recent version we
-  could find.
+* Rebased on Chord 3.6.4.
+  Since this release of Chord is licensed under GPL, Chordii is now
+  legally GPL as well.
 
 NEW IN VERSION 4.2
 

@@ -50,32 +50,5 @@ Chordie version 4.0 and later is Copyright 2007 The Chordie Project
 Chordii is licensed following the conditions of the GNU Public License,
 version 3 or later.
 
-Chord version 4.0 Copyright 2001 Martin Leclerc and Mario Dorion
-
-Chord version 3.6 Copyright 1992,1995 Martin Leclerc and Mario Dorion
-
-===== The latest COPYRIGHT from the original authors =====
-
-The CHORD utility for guitar players is distributed under the terms of the
-general GNU license. 
-
-Copyright (C) 2001  Martin Leclerc & Mario Dorion
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-Martin Leclerc (martin_a_leclerc@yahoo.com)
-Mario Dorion   (mario@dorion.org)
-
-===== End of COPYRIGHT =====
+CHORD is licensed following the conditions of the GNU Public License,
+version 2 or later. See COPYING for the full license text.

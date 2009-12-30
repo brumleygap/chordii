@@ -51,13 +51,13 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README NEWS AUTHORS COPYING examples/
+%doc README NEWS COPYING examples/
 %{_bindir}/*
 %{_mandir}/man1/*
 
 %changelog
 * Mon Jul 13 2009 Johan Vromans <jvromans@squirrel.nl> - 4.3-1
-- Upgrade original licence
+- Rebase on GPL Chord 3.6.4.
 
 * Sat Jan 31 2009 Johan Vromans <jvromans@squirrel.nl> - 4.2-5
 - Changed examples/* to examples/ to include all examples in a dir
