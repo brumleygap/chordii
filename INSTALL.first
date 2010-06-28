@@ -1,0 +1,13 @@
+A chordii distribution kit should contain a file 'INSTALL' and
+can be built according to the instructions in that file.
+
+When chordii is checked out from the development repository, you need
+first apply autoconf and frieds to get buildable sources. 'autoreconf'
+is an excellent tool to do that:
+
+  $ autoreconf -i -f -m
+
+Upon completion, the file 'INSTALL' (and some other files) should be
+present, and chordii can be built according to the instructions in
+that file.
+
