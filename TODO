@@ -12,7 +12,8 @@
 	[_] use pango
 [_] Unicode
 [_] distribution-specific packages
-	[X] Debian/Ubuntu
+	[X] Debian/Ubuntu (handled by Debian packager)
+	[X] Fedora (handled by Fedora packager)
 	[_] Mac OS X
 	[_] Windows
 [_] abstract version information from patchlevel.h
