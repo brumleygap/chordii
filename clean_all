@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Cleanup everything that is generated, beyond maintainer-clean
+
+test -f Makefile && make maintainer-clean
+
+rm aclocal.m4
+rm configure
+rm depcomp
+rm INSTALL
+rm install-sh
+rm Makefile.in
+rm man/Makefile.in
+rm src/Makefile.in
+rm src/config.h.in
+rm missing
