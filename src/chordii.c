@@ -1010,7 +1010,7 @@ char *directive;
 	else if (!strcmp(command, "columns") || !strcmp(command,"col"))
 		{
 		i = atoi(strtok(NULL, ": "));
-		if ( i <= 1 )
+		if ( i < 1 )
 			error ("invalid value for number of columns");
 		else
 			{
