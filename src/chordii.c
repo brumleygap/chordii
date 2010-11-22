@@ -1466,6 +1466,7 @@ char **argv;
 
 	if (do_toc)	/* generate index  page */
 		{
+		init_values();
 		build_ps_toc();
 		do_end_of_page(FALSE);
 		}
