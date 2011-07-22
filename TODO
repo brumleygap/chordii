@@ -7,6 +7,9 @@
 		suggestion: "indent -bli0 -nut -i4"
 	[_] update "K&R-style" function defs
 [_] allow GNU-style long options (--help, etc)
+[_] integrate a2crd in main program
+[_] consistent way of dealing with CHORD[ii]RC and A2CRDSIG
+	[_] protect unit testing from user settings
 [_] implement PDF generation
 	[_] pipe to ps2pdf
 	[_] use pango
@@ -19,12 +22,13 @@
 [_] abstract version information from patchlevel.h
 	[X] remove patchlevel.h in favor of config.h (trunk@23)
 	[_] RPM and DEB generation scripts should use same version numbers
-[_] set up "continuous integration" cron job on sf.net shell server
+[?] set up "continuous integration" cron job on sf.net shell server
 	[_] regularly check for new trunk commits
 	[_] automatically build and run unit tests
 	[_] post somewhere on the chordii sf.net Web site
 	[_] can we just use Hudson?
 [_] use user-provided title for PostScript document title
+[_] use user-provided preamble for PostScript (font encoding!)
 [_] use user-provided margins for the document
 [_] better way to select which chords are printed
 [_] transpose up different from transpose down
