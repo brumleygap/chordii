@@ -56,7 +56,7 @@
 #define DEF_TEXT_FONT "Times-Roman"
 #define DEF_CHORD_FONT "Helvetica-Oblique"
 #define MONOSPACED_FONT "Courier"
-
+#define DEF_EXTRA_SPACE	0
 #define CHORD_BUILTIN	0
 #define CHORD_DEFINED	1
 #define CHORD_IN_CHORDRC	2

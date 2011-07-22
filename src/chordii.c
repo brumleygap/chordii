@@ -52,6 +52,7 @@ int
 	min_col_vpos,		/* lowest colums ending */
 	hpos,
 	h_offset = 0,		/* horizontal offset for multi-col output */
+	extra_space, rt_extra_space, rc_extra_space,	/* extra line spacing */
 	start_of_chorus,	/* Vertical positions of the chorus */
 	end_of_chorus,
 	chord_size, rt_chord_size, rc_chord_size,	/* font size for 'chord_font' */
@@ -335,6 +336,7 @@ char *command;
 	fprintf (stderr, "	-t n               : Set text size [12]\n");
 	fprintf (stderr, "	-T postscript_font : Set text font\n");
 	fprintf (stderr, "	-V                 : Print version and patchlevel\n");
+	fprintf (stderr, "	-w n               : Extra vertical space between lines\n");
 	fprintf (stderr, "	-x n               : Transpose by 'n' half-tones\n");
 	fprintf (stderr, "	-P type            : Specify page size [letter, a4 (default)]\n");
 	fprintf (stderr, "	-2                 : 2 pages per sheet\n");
@@ -685,6 +687,7 @@ void set_sys_def()
 	n_columns = 0;
 	max_columns = 1;
 	dummy_kcs.chord_name[0]='\0';
+	extra_space = DEF_EXTRA_SPACE;
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -697,6 +700,7 @@ void set_rc_def()
 	if (rc_text_font != NULL) text_font =  rc_text_font;
 	if (rc_chord_font != NULL) chord_font =  rc_chord_font;
 	if (rc_pagespec != NULL) pagespec = rc_pagespec;
+	if (rc_extra_space != 0) extra_space = rc_extra_space;
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -709,6 +713,7 @@ void set_rt_def()
 	if (rt_text_font != NULL) text_font =  rt_text_font;
 	if (rt_chord_font != NULL) chord_font =  rt_chord_font;
 	if (rt_pagespec != NULL) pagespec = rt_pagespec;
+	if (rt_extra_space != 0) extra_space = rt_extra_space;
 	}
 
 /* --------------------------------------------------------------------------------*/
@@ -772,6 +777,7 @@ int amount;
 void print_text_line()
 	{
 	int i;
+	int ns = extra_space;
 
 	text_line[i_text] = '\0';
 
@@ -781,7 +787,8 @@ void print_text_line()
 		{
 		advance(blank_space);
 		blank_space = 0;
-		advance (chord_size + 1);
+		advance (chord_size + 1 + ns);
+		ns = 0;
 
 		if ( ( text_line[i] != '\0' )
 		  && ( vpos - text_size <= bottom))
@@ -798,13 +805,13 @@ void print_text_line()
 
 	if ( text_line[i] == '\0')
 		{
-		blank_space += text_size - 2;
+		  blank_space += text_size - 2 + (in_tab ? 0 : extra_space);
 		}
 	else
 		{
 		advance (blank_space);
 		blank_space = 0;
-		advance (text_size - 1);
+		advance (text_size - 1 + (in_tab ? 0 : ns));
 		if (need_soc)
 			{
 			start_of_chorus = vpos + text_size;
@@ -1274,7 +1281,7 @@ char **argv;
 
 	command_name= argv[0];
 
-	while ((c = getopt(argc, argv, "aAc:C:dDgGhilLno:p:P:s:t:T:Vx:24")) != -1)
+	while ((c = getopt(argc, argv, "aAc:C:dDgGhilLno:p:P:s:t:T:Vw:x:24")) != -1)
 		switch (c) {
 
 		case 'd':
@@ -1400,6 +1407,10 @@ char **argv;
 
 		case 'P':
 			rt_pagespec = pagetype(optarg);
+			break;
+
+		case 'w':
+			rt_extra_space = atoi(optarg);
 			break;
 
 		case '?':
