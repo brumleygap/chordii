@@ -6,8 +6,9 @@
 	[_] reindent
 		suggestion: "indent -bli0 -nut -i4"
 	[_] update "K&R-style" function defs
-[_] allow GNU-style long options (--help, etc)
+[X] allow GNU-style long options (--help, etc)
 [_] integrate a2crd in main program
+[_] fontsize tab
 [_] consistent way of dealing with CHORD[ii]RC and A2CRDSIG
 	[_] protect unit testing from user settings
 [_] implement PDF generation

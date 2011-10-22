@@ -1270,18 +1270,49 @@ void read_chordrc()
 
 
 /* --------------------------------------------------------------------------------*/
+
+static struct option long_options[] = {
+  { "2-up",		      no_argument,       0, '2' },
+  { "4-up",		      no_argument,       0, '4' },
+  { "about",		      no_argument,       0, 'A' },
+  { "chord-font",	      required_argument, 0, 'C' },
+  { "chord-grid-size",	      required_argument, 0, 's' },
+  { "chord-size",	      required_argument, 0, 'c' },
+  { "dump-chords",	      no_argument,       0, 'D' },
+  { "dump-chords-text",	      no_argument,       0, 'd' },
+  { "even-pages-number-left", no_argument,       0, 'L' },
+  { "help",		      no_argument,       0, 'h' },
+  { "lyrics-only",	      no_argument,       0, 'l' },
+  { "no-chord-grids",	      no_argument,       0, 'G' },
+  { "no-easy-chord-grids",    no_argument,       0, 'g' },
+  { "output",		      required_argument, 0, 'o' },
+  { "page-number-logical",    no_argument,       0, 'n' },
+  { "page-size",	      required_argument, 0, 'P' },
+  { "single-space",	      no_argument,       0, 'a' },
+  { "start-page-number",      required_argument, 0, 'p' },
+  { "table-of-contents",      no_argument,       0, 'i' },
+  { "text-font",	      required_argument, 0, 'T' },
+  { "text-size",	      required_argument, 0, 't' },
+  { "toc",		      no_argument,       0, 'i' },
+  { "transpose",	      required_argument, 0, 'x' },
+  { "version",		      no_argument,       0, 'V' },
+  { "vertical-space",	      required_argument, 0, 'w' }
+};
+
 int main(argc, argv)
 int argc;
 char **argv;
 	{
 	int c,i;
+	int option_index = 0;
 
 	mesg = mesgbuf;
 /* Option Parsing */
 
 	command_name= argv[0];
-
-	while ((c = getopt(argc, argv, "aAc:C:dDgGhilLno:p:P:s:t:T:Vw:x:24")) != -1)
+	while ((c = getopt_long(argc, argv,
+				"aAc:C:dDgGhilLno:p:P:s:t:T:Vw:x:24",
+				long_options, &option_index)) != -1)
 		switch (c) {
 
 		case 'd':
