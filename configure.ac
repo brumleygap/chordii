@@ -43,7 +43,7 @@ AC_REPLACE_FUNCS
 
 # Enforce programmer sanity.
 if test "$CC" = "gcc"; then
-  CFLAGS="$CFLAGS -Wall -Werror -pedantic-errors -g"
+  CFLAGS="$CFLAGS -Wall -pedantic -g"
 fi
 AC_SUBST(CFLAGS)
 
