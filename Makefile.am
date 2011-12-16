@@ -5,3 +5,7 @@ EXTRA_DIST = chordii.spec \
 	examples/swing-low.cho \
 	windows/config.h windows/getopt.h windows/getopt.c windows/makefile
 SUBDIRS = src man
+
+dist-hook: ChangeLog
+ChangeLog: configure.ac
+	git log --stat --name-only --date=short --abbrev-commit > ChangeLog
