@@ -317,30 +317,30 @@ char *command;
 	{
 	fprintf (stderr, "Usage: %s [options] file [file ...]\n", command);
 	fprintf (stderr, "Options:\n");
-	fprintf (stderr, "	-A                 : About Chordii...\n");
-	fprintf (stderr, "	-a                 : Automatic single space lines without chords\n");
-	fprintf (stderr, "	-c n               : Set chord size [9]\n");
-	fprintf (stderr, "	-C postscript_font : Set chord font\n");
-	fprintf (stderr, "	-D                 : Dumps chords definitions (PostScript)\n");
-	fprintf (stderr, "	-d                 : Dumps chords definitions (Text)\n");
-	fprintf (stderr, "	-G                 : Disable printing of chord grids\n");
-	fprintf (stderr, "	-g                 : Don't print grids for builtin \"easy\" chords.\n");
-	fprintf (stderr, "	-h                 : This message\n");
-	fprintf (stderr, "	-i                 : Generates a table of contents\n");
-	fprintf (stderr, "	-L                 : Even pages numbers on left\n");
-	fprintf (stderr, "	-l                 : Only print lyrics\n");
-	fprintf (stderr, "	-n                 : Number logical pages, not physical\n");
-	fprintf (stderr, "	-o filename        : Saves the output to file\n");
-	fprintf (stderr, "	-p n               : Starting page number [1]\n");
-	fprintf (stderr, "	-s n               : Set chord grid size [30]\n");
-	fprintf (stderr, "	-t n               : Set text size [12]\n");
-	fprintf (stderr, "	-T postscript_font : Set text font\n");
-	fprintf (stderr, "	-V                 : Print version and patchlevel\n");
-	fprintf (stderr, "	-w n               : Extra vertical space between lines\n");
-	fprintf (stderr, "	-x n               : Transpose by 'n' half-tones\n");
-	fprintf (stderr, "	-P type            : Specify page size [letter, a4 (default)]\n");
-	fprintf (stderr, "	-2                 : 2 pages per sheet\n");
-	fprintf (stderr, "	-4                 : 4 pages per sheet\n");
+	fprintf (stderr, "  --about  -A                   About Chordii...\n");
+	fprintf (stderr, "  --chord-font=FONT  -C         Sets chord font\n");
+	fprintf (stderr, "  --chord-grid-size=N  -s       Sets chord grid size [30]\n");
+	fprintf (stderr, "  --chord-size=N  -c            Sets chord size [9]\n");
+	fprintf (stderr, "  --dump-chords  -D             Dumps chords definitions (PostScript)\n");
+	fprintf (stderr, "  --dump-chords-text  -d        Dumps chords definitions (Text)\n");
+	fprintf (stderr, "  --even-pages-number-left  -L  Even pages numbers on left\n");
+	fprintf (stderr, "  --help  -h                    This message\n");
+	fprintf (stderr, "  --lyrics-only  -l             Only prints lyrics\n");
+	fprintf (stderr, "  --no-chord-grids  -G          Disables printing of chord grids\n");
+	fprintf (stderr, "  --no-easy-chord-grids  -g     Doesn't print grids for builtin \"easy\" chords.\n");
+	fprintf (stderr, "  --output=FILE  -o             Saves the output to FILE\n");
+	fprintf (stderr, "  --page-number-logical  -n     Numbers logical pages, not physical\n");
+	fprintf (stderr, "  --page-size=FMT  -P           Specifies page size [letter, a4 (default)]\n");
+	fprintf (stderr, "  --single-space  -a            Automatic single space lines without chords\n");
+	fprintf (stderr, "  --start-page-number=N  -p     Starting page number [1]\n");
+	fprintf (stderr, "  --test-size=N  -t             Sets text size [12]\n");
+	fprintf (stderr, "  --text-font=FONT  -T          Sets text font\n");
+	fprintf (stderr, "  --toc  -i                     Generates a table of contents\n");
+	fprintf (stderr, "  --transpose=N  -x             Transposes by N semi-tones\n");
+	fprintf (stderr, "  --version  -V                 Prints version and patchlevel\n");
+	fprintf (stderr, "  --vertical-space=N  -w        Extra vertical space between lines\n");
+	fprintf (stderr, "  --2-up  -2                    2 pages per sheet\n");
+	fprintf (stderr, "  --4-up  -4                    4 pages per sheet\n");
 
 	exit(0);
 	}
@@ -356,7 +356,7 @@ void do_about ()
 	printf("professional looking, impress-your-friends sheet-music suitable for printing\n");
 	printf("on your nearest PostScript printer.\n");
 	printf("\n");
-	printf("To learn more about Chordii, look for the man page or do \"chordii -h\" for\n");
+	printf("To learn more about Chordii, look for the man page or do \"chordii --help\" for\n");
 	printf("the list of options.\n");
 	printf("\n");
 	printf("			--0--\n");
@@ -1449,11 +1449,6 @@ char **argv;
 			break;
 		}
 
-/* Is there anything? */
-
-	if (argc == 1)
-		do_help(argv[0]);
-
 /* Is there input? */
 
 	if ((optind == argc) && isatty(0) && !dump_only)
@@ -1464,7 +1459,7 @@ char **argv;
 		fprintf (stderr, "Examples:\n");
 		fprintf (stderr, "   $ chordii my_song.cho > myfile.ps\n");
 		fprintf (stderr, "   $ chordii < mysong.cho > myfile.ps\n");
-		fprintf (stderr, "Do \"chordii -h\" to learn about Chordii's options\n");
+		fprintf (stderr, "Do \"chordii --help\" to learn about Chordii's options\n");
 		exit(1);
 	}
 
@@ -1473,10 +1468,13 @@ char **argv;
 	if (isatty(1) && (!dump_only || postscript_dump))  /* 1 == stdout  */
 	{
 		fprintf (stderr, "Error: Chordii will not send PostScript to your terminal.\n");
-		fprintf (stderr, "Please either redirect (>) or pipe (|) the output.\n");
+		fprintf (stderr, "Please redirect (>) or pipe (|) the output, or use\n");
+		fprintf (stderr, "the -o (--output) option to specify an output file.\n");
 		fprintf (stderr, "Examples:\n");
+		fprintf (stderr, "   $ chordii --output=myfile.ps my_song.cho\n");
 		fprintf (stderr, "   $ chordii my_song.cho > myfile.ps\n");
 		fprintf (stderr, "   $ chordii my_song.cho | lpr\n");
+		fprintf (stderr, "Do \"chordii --help\" to learn about Chordii's options\n");
 		exit(1);
 	}
 

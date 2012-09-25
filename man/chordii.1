@@ -18,93 +18,97 @@ Chordii download page
 .UE .
 
 .SH OPTIONS
+.B chordii
+takes both long options, starting with \fB\-\-\fP, and short options
+starting with a single \fB\-\fP, according to the getopt_long(3) conventions.
+
 .TP 8
-.B \-A
+.B \-\-about \-A
 Will print the "About Chordii..." message.
 .TP 8
-.B \-a
+.B \-\-single-space \-a
 Automatically single spaces lines that have no chords.
 .TP 8
-.B \-c \fICHORD_FONT_SIZE\fP
+.B \-\-chord-size=\fICHORD_FONT_SIZE\fP \-c
 Sets the size, in points, of the font used to display chords to the specified
 integer value.
 .TP 8
-.B \-C \fICHORD_FONT\fP
+.B \-\-chord-font=\fICHORD_FONT\fP \-C
 Sets the font used to print chords to the specified name. That name must be
 known to your PostScript Interpreter.
 .TP 8
-.B \-d
+.B \-\-dump-chords-text  \-d
 Generates a text chord chart of all internally known chords as well as chords
 defined in the .chordrc file. Chords defined in the .chordrc file are
 identified with the "(local)" caption. The printout is suitable for input to
 the .chordrc file.
 .TP 8
-.B \-D
+.B \-\-dump-chords \-D
 Generates a PostScript chord chart of all internally known chords as well as
 chords defined in the .chordrc file. Chords defined in the .chordrc file are
 identified with a small asterisk after the chord grid.
 .TP 8
-.B \-G
+.B \-\-no-chord-grids \-G
 Disable printing of the chord grids for the whole input file(s). The effect can
 be disable for any particular song by the usage of the \fBgrid\fP or \fBg\fP
 directive.
 .TP 8
-.B \-g
+.B \-\-no-easy-chord-grids \-g
 Disable printing of grids for "easy" chords. Whether a builtin chord is easy
 or not has been arbitrarily decided by the authors. The general rule was that
 any chord in its major, minor, 7th or minor 7th was "easy" while everything
-else (maj7, aug, dim, sus, etc...) was "difficult". All chords defined in the
- .chordrc file or in the input file are defined as "difficult".
+else (maj7, aug, dim, sus, etc...) was "difficult". All chords defined in 
+the .chordrc file or in the input file are defined as "difficult".
 .TP 8
-.B \-h
+.B \-\-help \-h
 Prints a short options summary.
 .TP
-.B \-i
+.B \-\-toc \-i
 Generates a table of contents with the song titles and page numbers.
 It implies page numbering through the document. Index pages
 are not numbered.
 .TP 8
-.B \-l
+.B \-\-lyrics-only \-l
 Prints only the lyrics of the song.
 .TP 8
-.B \-L
+.B \-\-even-pages-number-left \-L
 Places the odd and even page numbers in the lower right and left
 corners respectively (for two-sided output). The default is all page
 numbers on the right.
 .TP 8
-.B \-o \fIFILE\fP
+.B \-\-output=\fIFILE\fP \-o
 Sends PostScript output to \fIFILE\fP.
 .TP 8
-.B \-p \fIFIRST_PAGE\fP
+.B \-\-start-page-number=\fIFIRST_PAGE\fP \-p
 Numbers the pages consecutively starting with \fIfirst_page\fP (e.g.
 1). Without this option, each song restarts the page numbering at 1,
 and page numbers are only put on subsequent pages of multiple page
 songs.
 .TP 8
-.B \-P \fIPAPER_SIZE\fP
-Specifies the paper size, either "us" or "a4".
+.B \-\-page-size=\fIPAPER_SIZE\fP \-P
+Specifies the paper size, either "us" or "a4" (default).
 .TP 8
-.B \-s \fIGRID_SIZE\fP
+.B \-\-chord-grid-size=\fIGRID_SIZE\fP \-s
 Sets the size of the chord grids.
 .TP 8
-.B \-t \fITEXT_SIZE\fP
+.B \-\-text-size=\fITEXT_SIZE\fP \-t
 Sets the size, in points, of the font used to display the lyrics to the
 specified integer value. The title line is displayed using that point
 size + 5. The subtitle is displayed using that point size \- 2. The
 tablature is displayed using this point size \- 2.
 .TP 8
-.B \-T \fITEXT_FONT\fP
+.B  \-\-text-font=\fITEXT_FONT\fP \-T
 Sets the font used to print text to the specified name. That name must be
 known to your PostScript Interpreter.
 .TP 8
-.B \-V
+.B \-\-version \-V
 Prints version and patch level.
 .TP 8
-.B \-w \fIEXTRA_SPACE\fP
+.B \-\-vertical-space=\fIEXTRA_SPACE\fP \-w
 Adds extra vertical space between the lines to improve readability.
 .TP 8
-.B \-x \fIHALF_TONES\fP
-Sets up transposition to that number of half-tones. Can not be zero. All
+.B \-\-transpose=\fISEMITONES\fP \-x
+Sets up transposition to that number of semitones. Can not be zero. All
 chord names must be build in the following way in order to be recognized:
 
 {note-name}[#|b][^/]* [ '/' {note-name}[#|b][^/]* ]
@@ -115,10 +119,10 @@ name, as long as they are separated by '/'.
 
 {note-name} must appear in the list 'A','B','C','D','E','F','G'.
 .TP 8
-.B \-2
+.B \-\-2-up \-2
 Prints two logical pages per physical page.
 .TP 8
-.B \-4
+.B \-\-4-up \-4
 Prints four logical pages per physical page.
 
 .SH KEYWORDS
