@@ -41,6 +41,8 @@
 [_] i18n, L10n
 	maybe just allowing Unicode text input would be good enough
 
+[_] Directive to include pictures to be used instead of e.g. tabs.
+
 [X] use GNU autotools (trunk@13)
 [X] port to other operating systems
 	[X] Windows
