@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
-common = chordii.h common.c getopt.h
+common = chordii.h common.c
 bin_PROGRAMS = chordii a2crd
-chordii_SOURCES = $(common) chordii.c xpose.c iso.c grid.c getopt.c toc.c
+chordii_SOURCES = $(common) chordii.c xpose.c iso.c grid.c toc.c
 a2crd_SOURCES = $(common) a2crd.c
 TESTS = test/above.sh test/below.sh test/passthrough.sh
 EXTRA_DIST = $(TESTS) \

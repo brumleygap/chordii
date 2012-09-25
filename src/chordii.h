@@ -25,6 +25,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#ifdef HAVE_GETOPT_H
+ #include <getopt.h>
+#endif
+
 #ifdef HAVE_UNISTD_H
  #include <unistd.h>
 #endif

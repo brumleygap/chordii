@@ -30,7 +30,7 @@ AC_PROG_CC
 # Checks for header files.
 AC_FUNC_ALLOCA
 AC_HEADER_STDC
-AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([stdlib.h string.h unistd.h getopt.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
