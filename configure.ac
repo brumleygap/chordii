@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Chordii.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Chordii], [4.3.1], [jvromans@users.sourceforge.net])
+AC_INIT([Chordii], [4.4.0], [jvromans@users.sourceforge.net])
 
 AM_INIT_AUTOMAKE
 
