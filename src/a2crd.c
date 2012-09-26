@@ -153,6 +153,15 @@ while ((c=getc(source_fd)) != EOF)
 	switch (c)
 		{
 
+		case '\r':
+			{
+			int c2;
+			c2 = getc(source_fd);
+			if (c2 != '\n')
+				ungetc(c2, source_fd);
+			}
+			/* fall through */
+
 		case '\n':
 
 		n_lines++;

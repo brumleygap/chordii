@@ -1155,7 +1155,7 @@ FILE *source_fd;
 				while (1) 
 					{
 					c = getc(source_fd);
-					if (c == '\n' || c == -1)
+					if (c == '\n' || c == '\r' || c == EOF)
 						break;
 					}
 				i_input = 0;
@@ -1170,6 +1170,7 @@ FILE *source_fd;
 			break;
 
 		case '\n':
+		case '\r':
 			do_eol();
 			break;
 		case '(':
