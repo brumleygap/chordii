@@ -123,6 +123,7 @@ void use_text_font();
 
 #ifdef  __STDC__
 struct chord_struct *add_to_chordtab(char *chord);
+struct chord_struct *add_in_order(char *chord);
 void add_title_to_toc(char *title, int page_label);
 void add_subtitle_to_toc(char *subtitle);
 int do_transpose(char *chord);
@@ -150,6 +151,7 @@ char *toupper_str(char *string);
 extern      char *strtok(char *s1, const char *s2);
 #else /* __STDC__ */
 struct chord_struct *add_to_chordtab();
+struct chord_struct *add_in_order();
 int do_transpose();
 struct kcs *get_kc_entry ();
 void advance();

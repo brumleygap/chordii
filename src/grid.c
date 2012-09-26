@@ -228,12 +228,12 @@ int	origin, difficult;
 /*--------------------------------------------------------------------------------*/
 struct chord_struct* add_to_chordtab(chord)
 char *chord;
-{
+	{
 	struct chord_struct *ct_ptr, *new, **prev_ptr_handle;
 	struct kcs *kc_ptr;
 	char chord1[CHORD_NAME_SZ], chord2[CHORD_NAME_SZ];
 	int n = 0;
-
+	
 	ct_ptr = so_chordtab;
 	prev_ptr_handle = &so_chordtab;
 
@@ -244,7 +244,6 @@ char *chord;
 		prev_ptr_handle = &(ct_ptr->next);
 		ct_ptr = ct_ptr->next;
 		}
-
 
 	if ((ct_ptr != NULL) && (n == 0)) 
 		{
@@ -267,8 +266,50 @@ char *chord;
 		}
 
 	return (new);
-}
+	}
 
+/*--------------------------------------------------------------------------------*/
+struct chord_struct* add_in_order(chord)
+char *chord;
+	{
+	struct chord_struct *ct_ptr, *new, **prev_ptr_handle;
+	struct kcs *kc_ptr;
+	char chord1[CHORD_NAME_SZ], chord2[CHORD_NAME_SZ];
+	int n = 0;
+	
+	ct_ptr = so_chordtab;
+	prev_ptr_handle = &so_chordtab;
+
+	strcpy(chord1, chord);
+	while (( ct_ptr != NULL ) &&
+		((n=chordcompare(chord1, strcpy(chord2,ct_ptr->chord->chord_name))) != 0))
+		{
+		prev_ptr_handle = &(ct_ptr->next);
+		ct_ptr = ct_ptr->next;
+		}
+
+	if ((ct_ptr != NULL) && (n == 0)) 
+		{
+		new=ct_ptr;
+		}
+	else
+		{
+		if ((kc_ptr=get_kc_entry (chord)) == NULL)
+			{
+			sprintf (mesg, "chord \'%s\' has never been defined", chord);
+			error(mesg);
+			learn_chord(chord, -2, -2, -2, -2, -2, -2, 0, CHORD_BUILTIN, CHORD_EASY);
+			kc_ptr=get_kc_entry (chord);
+			}
+
+		new = (struct chord_struct *) malloc (sizeof (dummy_chord_struct));
+		new->chord=kc_ptr;
+		new->next = ct_ptr;
+		*prev_ptr_handle = new;
+		}
+
+	return (new);
+	}
 
 /*--------------------------------------------------------------------------------*/
 void moveto(new_hpos,new_vpos)

@@ -90,7 +90,8 @@ int		/* BOOLEANS */
 	has_chord = FALSE,
 	title1_found = FALSE,
 	number_logical = FALSE,
-	debug_mode = FALSE;
+	debug_mode = FALSE,
+	in_order = TRUE;
 
 float
 	chord_inc,
@@ -320,6 +321,7 @@ char *command;
 	fprintf (stderr, "  --about  -A                   About Chordii...\n");
 	fprintf (stderr, "  --chord-font=FONT  -C         Sets chord font\n");
 	fprintf (stderr, "  --chord-grid-size=N  -s       Sets chord grid size [30]\n");
+	fprintf (stderr, "  --chord-grids-sorted  -S      Prints chord grids alphabetically\n");
 	fprintf (stderr, "  --chord-size=N  -c            Sets chord size [9]\n");
 	fprintf (stderr, "  --dump-chords  -D             Dumps chords definitions (PostScript)\n");
 	fprintf (stderr, "  --dump-chords-text  -d        Dumps chords definitions (Text)\n");
@@ -453,7 +455,10 @@ char *chord;
 		{
 		if (strcmp(toupper_str(chord), NO_CHORD_STR))
 			{
-			ct_ptr = add_to_chordtab(chord);
+			if(in_order)
+				ct_ptr = add_in_order(chord);		
+			else
+				ct_ptr = add_to_chordtab(chord);
 			chord_line[j] = ct_ptr->chord->chord_name;
 			}
 		else	chord_line[j] = NO_CHORD_STR;
@@ -509,7 +514,7 @@ void init_ps()
 	printf ("%%%%BoundingBox: 5 5 %d %d\n", (int)(width-5), (int)(height-5));
 	printf ("%%%%EndComments\n");
 	printf ("/inch {72 mul } def\n");
-
+	
 	print_re_encode();
 	set_chord_font();
 	set_text_font(text_size);
@@ -1277,6 +1282,7 @@ static struct option long_options[] = {
   { "4-up",		      no_argument,       0, '4' },
   { "about",		      no_argument,       0, 'A' },
   { "chord-font",	      required_argument, 0, 'C' },
+  { "chord-grids-sorted",     no_argument,       0, 'S' },
   { "chord-grid-size",	      required_argument, 0, 's' },
   { "chord-size",	      required_argument, 0, 'c' },
   { "dump-chords",	      no_argument,       0, 'D' },
@@ -1312,7 +1318,7 @@ char **argv;
 
 	command_name= argv[0];
 	while ((c = getopt_long(argc, argv,
-				"aAc:C:dDgGhilLno:p:P:s:t:T:Vw:x:24",
+				"aAc:C:dDgGhilLno:p:P:s:St:T:Vw:x:24",
 				long_options, &option_index)) != -1)
 		switch (c) {
 
@@ -1367,6 +1373,10 @@ char **argv;
 				error_rt("invalid value for grid_size");
 			else
 				rt_grid_size = i;
+			break;
+		
+		case 'S':
+			in_order = FALSE;
 			break;
 
 		case 'g':
