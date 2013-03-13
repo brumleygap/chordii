@@ -336,7 +336,7 @@ char *command;
 	fprintf (stderr, "  --page-size=FMT  -P           Specifies page size [letter, a4 (default)]\n");
 	fprintf (stderr, "  --single-space  -a            Automatic single space lines without chords\n");
 	fprintf (stderr, "  --start-page-number=N  -p     Starting page number [1]\n");
-	fprintf (stderr, "  --test-size=N  -t             Sets text size [12]\n");
+	fprintf (stderr, "  --text-size=N  -t             Sets text size [12]\n");
 	fprintf (stderr, "  --text-font=FONT  -T          Sets text font\n");
 	fprintf (stderr, "  --toc  -i                     Generates a table of contents\n");
 	fprintf (stderr, "  --transpose=N  -x             Transposes by N semi-tones\n");
