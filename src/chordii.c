@@ -825,10 +825,12 @@ void print_text_line()
 			}
 		use_text_font();
 		printf ("%d %d moveto\n", hpos, vpos);
-		printf ("(");
-		ps_puts(&text_line[0]);
-		printf (") show\n");
-		}
+		if(isalnum(text_line[0])){
+		   printf ("(");
+		   ps_puts(&text_line[0]);
+		   printf (") show\n");
+	    }
+	}
 
 	i_text = 0;
 	i_text_ov = FALSE;
