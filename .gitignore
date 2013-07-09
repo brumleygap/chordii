@@ -21,5 +21,7 @@ src/config.h.in
 src/stamp-h1
 windows/config.h
 *.o
+*.ps
+*.pdf
 src/a2crd
 src/chordii

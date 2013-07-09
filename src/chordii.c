@@ -734,7 +734,7 @@ void init_values()
 
 	top = height - 36.0;
 	bottom = 40.0;
-	margin = 72.0;
+	margin = 36.0;
 	min_col_vpos = top;		/* lowest colums ending */
 
 	switch (pagination) 
@@ -825,11 +825,12 @@ void print_text_line()
 			}
 		use_text_font();
 		printf ("%d %d moveto\n", hpos, vpos);
-		if(isalnum(text_line[0])){
+		if(isprint(text_line[0]))/*My Added code*/
+		   {
 		   printf ("(");
 		   ps_puts(&text_line[0]);
 		   printf (") show\n");
-	    }
+	       }
 	}
 
 	i_text = 0;
